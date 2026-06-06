@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Innovatera Hackathon 2026 | UFE</title>
+
+<link rel="icon" href="https://media.licdn.com/dms/image/v2/D4D0BAQFAxEn3zSIofQ/company-logo_100_100/B4DZilZQpqGsAU-/0/1755121520056/innovatera_tech_logo?e=2147483647&v=beta&t=-Zx4mpbBFx76uaFukhX_Ajp5Or-GU3x6C1Ys195Fggo">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+<style>
+:root {
+  /* Light Mode Variables */
+  --bg: #f8fafc;
+  --bg2: #ffffff;
+  --bg3: #f1f5f9;
+  --green: #6DA32D; 
+  --green-dim: rgba(109,163,45,0.15);
+  --green-glow: rgba(109,163,45,0.25);
+  --gold: #D9A01C;
+  --gold-glow: rgba(217,160,28,0.3);
+  --pink: #C72D88;
+  --pink-dim: rgba(199,45,136,0.15);
+  --blue: #2256CC;
+  --text: #0f172a;
+  --muted: #475569;
+  --border: #e2e8f0;
+  --white: #ffffff;
+  --black: #000000;
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+/* FIX FOR MOBILE SCROLL GAPS: Force strict boundaries and kill horizontal scroll */
+html, body {
+  margin: 0; 
+  padding: 0; 
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  scroll-behavior: smooth; 
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  transition: background-color 0.4s ease, color 0.4s ease;
+  position: relative;
+}
+
+/* ── NOISE OVERLAY ── */
+body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:9999;
+  opacity:0.3;
+}
+
+/* ── NAV ── */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0; 
+  z-index: 1000;
+  padding: 0 5%;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+  transform: translateZ(0); /* Prevents scroll flickering/gaps on WebKit */
+}
+
+nav {
+  max-width: 1300px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.nav-logo {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1001; 
+}
+
+.nav-logo:hover {
+  transform: scale(1.015);
+}
+
+.nav-logo-img {
+  height: 100px; 
+  width: auto;
+  max-width: 250px;
+  object-fit: contain; 
+  object-position: center;
+  mix-blend-mode: multiply; 
+  transition: height 0.3s ease;
+}
+
+.nav-links { 
+  display: flex; 
+  align-items: center; 
+  gap: 28px; 
+}
+
+.nav-links a {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  letter-spacing: 0.01em;
+}
+
+.nav-links a:not(.nav-cta)::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 0;
+  height: 2.5px;
+  background-color: var(--green);
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px;
+}
+
+.nav-links a:not(.nav-cta):hover { 
+  color: var(--text); 
+  transform: translateY(-1px);
+}
+
+.nav-links a:not(.nav-cta):hover::after {
+  width: 100%;
+}
+
+.nav-cta {
+  background: var(--green) !important;
+  color: var(--white) !important;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700 !important;
+  font-size: 0.92rem !important;
+  letter-spacing: 0.04em !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 12px var(--green-glow);
+}
+
+.nav-cta:hover {
+  background: #5a8a25 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--green-glow) !important;
+}
+
+/* ── VIEWS ── */
+.view { display:none; opacity: 0; transition: opacity 0.4s ease; }
+.view.active { display:block; opacity: 1; }
+
+/* ── HERO SECTION ── */
+.hero {
+  position:relative;
+  min-height:100vh;
+  min-height:100dvh; /* Adapts properly when mobile address bar hides */
+  display:flex;
+  align-items:center;
+  padding:160px 5% 80px;
+  overflow:hidden;
+  background: var(--bg);
+}
+
+.hero-bg {
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(109,163,45,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(109,163,45,0.06) 1px, transparent 1px);
+  background-size:60px 60px;
+  animation:gridMove 30s linear infinite;
+  z-index: 0;
+}
+@keyframes gridMove {
+  0%{ background-position:0 0; }
+  100%{ background-position:60px 60px; }
+}
+
+.hero-glow {
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(109,163,45,0.15) 0%, transparent 70%);
+  top: -100px; left: -100px;
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+}
+.hero-glow-2 {
+  position: absolute;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(199,45,136,0.1) 0%, transparent 70%);
+  bottom: 10%; right: -50px;
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-container {
+  position:relative;
+  z-index:2;
+  max-width:1300px;
+  margin:0 auto;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 60px;
+  align-items: center;
+  width: 100%;
+}
+
+.hero-text-col { text-align: left; }
+
+.hero h1 {
+  font-family:'Outfit',sans-serif;
+  font-size:clamp(3.2rem, 5.5vw, 5.4rem);
+  font-weight:800;
+  line-height:1.08;
+  letter-spacing:-0.03em;
+  color:var(--text);
+  animation:fadeUp 0.8s 0.1s ease both;
+  margin-bottom:24px;
+}
+h1 .accent { color:var(--green); }
+h1 .accent-pink { color:var(--pink); }
+
+.hero-sub {
+  font-size:1.15rem;
+  color:var(--muted);
+  line-height:1.75;
+  max-width:560px;
+  margin:0 0 40px 0;
+  animation:fadeUp 0.8s 0.2s ease both;
+}
+
+.hero-actions {
+  display:flex; gap:16px; justify-content:flex-start; flex-wrap:wrap;
+  animation:fadeUp 0.8s 0.3s ease both;
+}
+
+/* Right Column - Visual Cards */
+.hero-visual-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-end;
+  animation: fadeUp 0.8s 0.4s ease both;
+}
+
+.event-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--white);
+  padding: 20px 24px;
+  border-radius: 20px;
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 360px;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-5px) scale(1.02) !important;
+  box-shadow: 0 25px 35px -5px rgba(0, 0, 0, 0.15);
+  border-color: var(--green-dim);
+}
+
+.ec-1 { transform: translateX(-40px); z-index: 3; }
+.ec-2 { transform: translateX(0); z-index: 2; background: var(--bg2); border-color: var(--border); }
+.ec-3 { transform: translateX(-60px); z-index: 1; }
+
+.ec-icon {
+  width: 50px; height: 50px;
+  border-radius: 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; color: var(--green);
+  flex-shrink: 0;
+}
+.ec-2 .ec-icon { background: var(--green-dim); color: var(--green); border-color: transparent; }
+
+.ec-text { display: flex; flex-direction: column; gap: 4px; }
+.ec-label { font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.ec-value { font-size: 1.05rem; font-weight: 600; color: var(--text); }
+
+
+/* Buttons */
+.btn-primary {
+  background:var(--green); color:var(--white); border:none;
+  padding:16px 36px; border-radius:10px;
+  font-family:'Outfit',sans-serif; font-weight:700; font-size:1rem;
+  cursor:pointer; transition:all 0.3s ease; letter-spacing:0.02em;
+  box-shadow: 0 4px 15px var(--green-glow);
+}
+.btn-primary:hover { background:#5a8a25; transform:translateY(-3px); box-shadow:0 8px 25px var(--green-glow); }
+.btn-outline {
+  background:var(--bg2); color:var(--text); border:1px solid var(--border);
+  padding:16px 36px; border-radius:10px;
+  font-family:'Outfit',sans-serif; font-weight:600; font-size:1rem;
+  cursor:pointer; transition:all 0.3s ease; box-shadow: var(--shadow-sm);
+}
+.btn-outline:hover { border-color:var(--green); color:var(--green); transform:translateY(-3px); box-shadow: var(--shadow-md); }
+
+/* ── TICKER ── */
+.ticker-wrap { width:100%; background:var(--green); overflow:hidden; padding:12px 0; position:relative; }
+.ticker-track { display:flex; width:max-content; animation:ticker 30s linear infinite; }
+.ticker-item { font-family:'Outfit',sans-serif; font-weight:700; font-size:0.85rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--white); padding:0 50px; white-space:nowrap; display: flex; align-items: center; gap: 50px; }
+.ticker-sep { color:rgba(255,255,255,0.5); font-size: 0.6rem; }
+@keyframes ticker { 0%{ transform:translateX(0); } 100%{ transform:translateX(-50%); } }
+
+/* ── SECTIONS ── */
+section { padding:100px 5%; max-width:1300px; margin:0 auto; }
+.section-label { font-family: 'Outfit', sans-serif; font-size:0.8rem; font-weight:800; letter-spacing:0.18em; text-transform:uppercase; color:var(--green); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+.section-label::before { content:''; width:24px; height:2px; background:var(--green); display:inline-block; }
+.section-title { font-family:'Outfit',sans-serif; font-size:clamp(2.2rem, 4vw, 3.2rem); font-weight:800; line-height:1.15; letter-spacing:-0.02em; color:var(--text); margin-bottom:20px; }
+.section-sub { color:var(--muted); font-size:1.05rem; line-height:1.7; max-width:560px; }
+
+/* ── STATS BAR ── */
+.stats-bar { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:50px 5%; }
+.stats-inner { max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; }
+.stat-item { text-align:center; padding:20px 30px; border-right:1px solid var(--border); transition: transform 0.3s ease; }
+.stat-item:hover { transform: translateY(-5px); }
+.stat-item:last-child { border-right:none; }
+.stat-num { font-family:'Outfit',sans-serif; font-size:3rem; font-weight:800; color:var(--text); line-height:1; margin-bottom:8px; }
+.stat-num .unit { color:var(--green); }
+.stat-label { font-size:0.9rem; font-weight: 500; color:var(--muted); letter-spacing:0.04em; text-transform: uppercase; }
+
+/* ── ABOUT / THEMES ── */
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
+.themes-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:40px; }
+.theme-card { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:36px 32px; position:relative; overflow:hidden; transition:all 0.4s ease; box-shadow: var(--shadow-sm); }
+.theme-card:hover { border-color:var(--green); transform:translateY(-6px); box-shadow: var(--shadow-md); }
+.theme-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; }
+.theme-health::before { background:linear-gradient(90deg,var(--pink),transparent); }
+.theme-green::before { background:linear-gradient(90deg,var(--green),transparent); }
+.theme-icon { font-size:2.2rem; margin-bottom:16px; display:block; }
+.theme-card h3 { font-family:'Outfit',sans-serif; font-weight:700; font-size:1.2rem; color:var(--text); margin-bottom:12px; }
+.theme-card p { font-size:0.95rem; color:var(--muted); line-height:1.65; }
+.check-list div { display:flex; align-items:center; gap:10px; font-size:0.95rem; font-weight: 500; color:var(--text); transition: transform 0.2s ease; }
+.check-list div:hover { transform: translateX(5px); }
+
+/* ── BENEFITS ── */
+.benefits-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 40px; }
+.benefit-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 30px 20px; text-align: center; transition: all 0.3s ease; box-shadow: var(--shadow-sm); }
+.benefit-card:hover { transform: translateY(-5px); border-color: var(--green); box-shadow: var(--shadow-md); }
+.benefit-icon { font-size: 2.5rem; color: var(--green); margin-bottom: 15px; }
+.benefit-title { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+.benefit-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+/* ── PRIZE SECTION ── */
+.prizes-section { background:var(--bg); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:100px 5%; position: relative; overflow: hidden; }
+.prizes-inner { max-width:1100px; margin:0 auto; position: relative; z-index: 2; }
+.prizes-section::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(217,160,28,0.1) 0%, transparent 60%); z-index: 1; pointer-events: none; }
+.grand-prize-showcase { background: var(--bg2); border: 2px solid var(--gold); border-radius: 24px; padding: 60px 40px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.05), inset 0 0 30px rgba(217,160,28,0.05); margin: 60px auto 40px; max-width: 900px; position: relative; overflow: hidden; transition: transform 0.4s ease, box-shadow 0.4s ease; }
+.grand-prize-showcase:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 30px 60px rgba(0,0,0,0.08), inset 0 0 40px rgba(217,160,28,0.1); }
+.grand-prize-showcase::before { content:''; position:absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(from 0deg, transparent 0%, rgba(217,160,28,0.1) 20%, transparent 40%); animation: spinLight 12s linear infinite; opacity: 0.8; }
+@keyframes spinLight { 100% { transform: rotate(360deg); } }
+.grand-badge { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: rgba(217,160,28,0.1); border: 1px solid var(--gold); color: #b07d0e; padding: 10px 28px; border-radius: 100px; font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 0.9rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 24px; position: relative; z-index: 2; box-shadow: 0 4px 10px rgba(217,160,28,0.15); }
+.grand-icon { font-size: 5rem; line-height: 1; margin-bottom: 20px; position: relative; z-index: 2; color: var(--gold); filter: drop-shadow(0 4px 10px rgba(217,160,28,0.3)); }
+.grand-amount { font-family: 'Outfit', sans-serif; font-size: clamp(3.5rem, 8vw, 5.5rem); font-weight: 800; color: #b07d0e; line-height: 1; margin-bottom: 20px; position: relative; z-index: 2; }
+.grand-desc { font-size: 1.1rem; color: var(--muted); max-width: 600px; margin: 0 auto 30px; line-height: 1.7; position: relative; z-index: 2; }
+.grand-perks { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; list-style: none; position: relative; z-index: 2; }
+.grand-perks li { background: var(--bg); border: 1px solid var(--border); padding: 12px 24px; border-radius: 100px; font-size: 0.95rem; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 10px; transition: all 0.3s ease; box-shadow: var(--shadow-sm); }
+.grand-perks li:hover { border-color: var(--gold); transform: translateY(-2px); }
+.grand-perks li i { color: var(--gold); font-size: 1.1rem; }
+
+/* ── TIMELINE ── */
+.timeline { position:relative; margin-top:50px; }
+.timeline::before { content:''; position:absolute; left:20px; top:0; bottom:0; width:3px; background:linear-gradient(to bottom, var(--green), var(--blue), var(--pink), transparent); border-radius: 3px; }
+.tl-item { display:flex; gap:32px; padding-bottom:48px; position:relative; }
+.tl-dot { width:44px; height:44px; border-radius:50%; background:var(--bg2); border:3px solid var(--green); display:flex; align-items:center; justify-content:center; font-size:0.9rem; font-weight:700; color:var(--green); flex-shrink:0; position:relative; z-index:1; box-shadow: 0 0 0 4px var(--bg); }
+.tl-content { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:28px; flex:1; transition:all 0.3s ease; box-shadow: var(--shadow-sm); }
+.tl-content:hover { border-color:var(--green); transform: translateX(8px); box-shadow: var(--shadow-md); }
+.tl-date { font-family: 'Outfit', sans-serif; font-size:0.8rem; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:var(--green); margin-bottom:8px; display: flex; align-items: center; gap: 8px;}
+.tl-title { font-family:'Outfit',sans-serif; font-weight:700; font-size:1.2rem; color:var(--text); margin-bottom:10px; }
+.tl-desc { font-size:0.95rem; color:var(--muted); line-height:1.6; }
+
+/* ── MENTORS & JURY ── */
+.mentors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-top: 40px; }
+.mentor-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 40px 24px; text-align: center; transition: all 0.3s ease; box-shadow: var(--shadow-sm); }
+.mentor-card:hover { transform: translateY(-6px); border-color: var(--green); box-shadow: var(--shadow-md); }
+.mentor-avatar { width: 70px; height: 70px; border-radius: 50%; background: var(--green-dim); color: var(--green); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 20px; border: 2px solid var(--bg2); box-shadow: 0 4px 10px var(--green-glow); }
+.mentor-card:nth-child(2) .mentor-avatar { background: var(--pink-dim); color: var(--pink); box-shadow: 0 4px 10px var(--pink-dim); }
+.mentor-card:nth-child(3) .mentor-avatar { background: rgba(34,86,204,0.15); color: var(--blue); box-shadow: 0 4px 10px rgba(34,86,204,0.2); }
+.mentor-card:nth-child(4) .mentor-avatar { background: rgba(217,160,28,0.15); color: var(--gold); box-shadow: 0 4px 10px rgba(217,160,28,0.2); }
+.mentor-name { font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.mentor-role { font-size: 0.9rem; color: var(--muted); font-weight: 500; }
+
+/* ── ELIGIBILITY & RULES ── */
+.criteria-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:40px; }
+.criteria-card { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:32px 24px; display:flex; gap:16px; align-items:flex-start; transition:all 0.3s ease; box-shadow: var(--shadow-sm); }
+.criteria-card:hover { border-color:var(--green); transform: translateY(-5px); box-shadow: var(--shadow-md); }
+.criteria-num { font-family:'Outfit',sans-serif; font-weight:800; font-size:1.8rem; color:var(--green); opacity:0.3; flex-shrink:0; line-height:1; transition: opacity 0.3s ease;}
+.criteria-card:hover .criteria-num { opacity: 1; }
+.criteria-text h4 { font-family: 'Outfit', sans-serif; font-weight:700; font-size:1rem; color:var(--text); margin-bottom:8px; }
+.criteria-text p { font-size:0.9rem; color:var(--muted); line-height:1.6; }
+.rules-container { display: flex; flex-direction: column; gap: 16px; max-width: 900px; margin: 40px auto 0; }
+.rule-row { display: flex; gap: 20px; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-shadow: var(--shadow-sm); align-items: center; }
+.rule-icon-box { width: 50px; height: 50px; background: var(--green-dim); color: var(--green); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border-radius: 10px; flex-shrink: 0; }
+.rule-content h4 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.rule-content p { font-size: 0.92rem; color: var(--muted); line-height: 1.5; }
+
+/* ── FAQ & CONTACT ── */
+.faq-container { max-width: 800px; margin: 40px auto 0; display: flex; flex-direction: column; gap: 16px; }
+.faq-item { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: all 0.3s ease; box-shadow: var(--shadow-sm); }
+.faq-item:hover { border-color: var(--green); box-shadow: var(--shadow-md); }
+.faq-question { padding: 20px 24px; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 1.05rem; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+.faq-question::-webkit-details-marker { display: none; } 
+.faq-question i { color: var(--green); transition: transform 0.3s ease; font-size: 0.9rem; }
+.faq-item[open] .faq-question i { transform: rotate(180deg); }
+.faq-answer { padding: 0 24px 20px; font-size: 0.95rem; color: var(--muted); line-height: 1.6; border-top: 1px solid transparent; }
+.faq-item[open] .faq-answer { border-top-color: var(--border); padding-top: 15px; margin-top: 5px; }
+.contact-wrap { display: flex; justify-content: center; gap: 40px; margin-top: 40px; flex-wrap: wrap; }
+.contact-item { display: flex; align-items: center; gap: 15px; background: var(--bg2); padding: 20px 30px; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); transition: all 0.3s ease; }
+.contact-item:hover { transform: translateY(-3px); border-color: var(--green); box-shadow: var(--shadow-md); }
+.contact-icon { width: 50px; height: 50px; background: var(--green-dim); color: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+.contact-text h4 { font-family: 'Outfit', sans-serif; font-size: 1rem; color: var(--text); margin-bottom: 4px; }
+.contact-text p { font-size: 0.9rem; color: var(--muted); }
+.contact-text a { color: var(--green); text-decoration: none; font-weight: 600; }
+.contact-text a:hover { text-decoration: underline; }
+
+/* ── FORMS ── */
+.form-section { padding:120px 5%; background:var(--bg); border-top:1px solid var(--border); min-height: 100vh; min-height: 100dvh; }
+.form-inner { max-width:720px; margin:0 auto; background: var(--bg2); padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid var(--border); }
+.form-tabs { display:flex; gap:8px; background: var(--bg3); padding: 6px; border-radius:12px; margin-bottom:40px; }
+.tab-btn { flex:1; padding:14px; background:transparent; border:none; border-radius: 8px; color:var(--muted); font-family:'Outfit',sans-serif; font-size:0.95rem; font-weight:700; cursor:pointer; transition:all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { background:var(--white); color:var(--green); box-shadow: var(--shadow-sm); }
+.form-pane { display:none; animation: fadeUp 0.4s ease; }
+.form-pane.active { display:block; }
+.form-header-text { margin-bottom:32px; text-align: center; }
+.form-header-text h3 { font-family:'Outfit',sans-serif; font-weight:800; font-size:2rem; color:var(--text); margin-bottom:10px; }
+.form-header-text p { font-size:0.95rem; color:var(--muted); line-height:1.6; }
+.form-group { margin-bottom:24px; }
+.form-group label { display:block; font-family:'Outfit', sans-serif; font-size:0.85rem; font-weight:700; color:var(--text); margin-bottom:10px; text-transform:uppercase; letter-spacing: 0.05em; }
+.form-group input, .form-group textarea, .form-group select { width:100%; background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:16px; color:var(--text); font-family:'Inter',sans-serif; font-size:0.95rem; outline:none; transition:all 0.3s ease; -webkit-appearance:none; }
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color:var(--green); box-shadow:0 0 0 4px var(--green-dim); background: var(--white); }
+.form-group select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23475569'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; background-size: 16px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.form-hint { font-size:0.8rem; color:var(--muted); margin-top:8px; display: flex; align-items: center; gap: 6px; }
+.submit-btn { width:100%; padding:18px; background:var(--green); color:var(--white); border:none; border-radius:12px; font-family:'Outfit',sans-serif; font-weight:700; font-size:1.1rem; cursor:pointer; transition:all 0.3s ease; letter-spacing:0.02em; margin-top:10px; box-shadow: 0 4px 15px var(--green-glow); display: flex; align-items: center; justify-content: center; gap: 10px; }
+.submit-btn:hover { background:#5a8a25; box-shadow:0 8px 25px var(--green-glow); transform:translateY(-2px); }
+
+/* ── SUCCESS STATE & COUNTDOWN ── */
+.success-msg { display:none; text-align:center; padding:60px 20px; animation: fadeUp 0.6s ease; }
+.success-msg .check-circle { width:90px; height:90px; background:var(--green-dim); border:3px solid var(--green); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:3rem; color: var(--green); margin:0 auto 24px; animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.success-msg h4 { font-family:'Outfit',sans-serif; font-weight:800; font-size:2rem; color:var(--text); margin-bottom:12px; }
+.success-msg p { font-size:1.05rem; color:var(--muted); line-height: 1.6; max-width: 500px; margin: 0 auto 30px; }
+.countdown-timer { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
+.cd-box { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 15px; min-width: 80px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; align-items: center; }
+.cd-box span { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 800; color: var(--pink); line-height: 1; }
+.cd-box small { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; font-weight: 600; margin-top: 5px; letter-spacing: 0.05em; }
+
+/* ── FOOTER ── */
+footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center; background: var(--bg2); }
+.footer-inner { max-width:1300px; margin:0 auto; }
+.footer-logos { display: flex; justify-content: center; align-items: center; gap: 40px; margin-bottom: 40px; flex-wrap: wrap; }
+.logo-box { display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease; height: 190px; width: auto; padding: 0 15px; }
+.logo-box:hover { transform: translateY(-4px) scale(1.05); }
+.logo-box img { height: 100%; width: auto; object-fit: contain; object-position: center; mix-blend-mode: multiply; }
+.footer-desc { color:var(--muted); font-size:0.95rem; margin-bottom:20px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.7; }
+.footer-copy { font-size:0.85rem; color:var(--muted); opacity:0.8; font-weight: 500; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from{ opacity:0; transform:translateY(24px); } to{ opacity:1; transform:translateY(0); } }
+@keyframes scaleIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+.reveal { opacity:0; transform:translateY(32px); transition:opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* ── RESPONSIVE OVERRIDES ── */
+@media(max-width:900px){
+  header {
+    padding: 10px 5%; 
+  }
+  
+  nav {
+    justify-content: center; /* Center the logos */
+  }
+
+  .nav-logo {
+    width: 100%;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .nav-logo-img { 
+    height: 60px; /* Properly sized for mobile centering */
+    max-width: 45%; 
+  }
+  
+  /* Completely hide nav links on mobile */
+  .nav-links {
+    display: none !important;
+  }
+
+  .hero-container { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+  .hero-text-col { text-align: center; }
+  .hero-sub { margin: 0 auto 32px auto; }
+  .hero-actions { justify-content: center; }
+  .hero-visual-col { align-items: center; }
+  .ec-1, .ec-2, .ec-3 { transform: translateX(0) !important; max-width: 100%; }
+  .two-col { grid-template-columns:1fr; gap:40px; }
+  .themes-grid { grid-template-columns:1fr; }
+  .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+  .criteria-grid { grid-template-columns:1fr 1fr; }
+  .stat-item { border-right:none; border-bottom:1px solid var(--border); }
+  .form-row { grid-template-columns:1fr; }
+  .grand-amount { font-size: 3rem; }
+  .form-inner { padding: 30px 20px; }
+}
+
+@media(max-width:600px){
+  .nav-logo-img { height: 130px; }
+  .criteria-grid { grid-template-columns:1fr; }
+  .benefits-grid { grid-template-columns: 1fr; }
+  .hero-actions { flex-direction: column; }
+  .hero-actions button { width: 100%; }
+  .grand-perks li { width: 100%; justify-content: center; }
+  .contact-wrap { flex-direction: column; gap: 20px; }
+  .contact-item { width: 100%; }
+  .footer-logos { gap: 30px; flex-wrap: wrap; justify-content: center; }
+  .logo-box { height: 180px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="nav-logo" onclick="showView('landing')">
+      <img src="https://drive.google.com/thumbnail?id=1co6fiB23OJRrQSuQheJp2WIREZIizok9&sz=w1000" alt="Innovatera Logo" class="nav-logo-img">
+      <img src="https://drive.google.com/thumbnail?id=1OiAA-tQINjui2hF2Z77V4ffA1o80Ghz6&sz=w1000" alt="UFE WorX Logo" class="nav-logo-img">
+    </div>
+
+    <!-- Navigation Links (Hidden on Mobile) -->
+    <div class="nav-links" id="nav-links">
+      <a onclick="showView('landing')">Home</a>
+      <a onclick="scrollToSection('themes')">Themes</a>
+      <a onclick="scrollToSection('prizes-section')">Prizes</a>
+      <a onclick="scrollToSection('timeline-section')">Timeline</a>
+      <a onclick="scrollToSection('faq-section')">FAQ</a>
+      <a onclick="scrollToSection('contact-section')">Contact</a>
+      <a onclick="showView('apply')" class="nav-cta">Apply Now <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+  </nav>
+</header>
+
+<div id="landing" class="view active">
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow-2"></div>
+    
+    <div class="hero-container">
+      
+      <div class="hero-text-col">
+        <h4 style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text); letter-spacing: 0.02em; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 10px; background: rgba(109, 163, 45, 0.08); padding: 8px 18px; border-radius: 8px; border-left: 3px solid var(--green);">
+          <i class="fa-solid fa-rocket" style="color: var(--green); animation: pulseIcon 2s infinite;"></i> Innovatera & UFE WorX Hackathon
+        </h4>
+        <h1>Tech Solutions for<br><span class="accent">Women's Health</span><br>&amp; the <span class="accent-pink">Environment</span></h1>
+        <p class="hero-sub">Step onto the premier innovation stage at UFE. Devise scalable digital products engineered to solve complex systemic challenges, secure immediate capitalization paths, and build lasting legacy.</p>
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="showView('apply')">Start Application</button>
+          <button class="btn-outline" onclick="scrollToSection('prizes-section')">View Prizes <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i></button>
+        </div>
+      </div>
+
+      <div class="hero-visual-col">
+        <div class="event-card ec-1">
+          <div class="ec-icon"><i class="fa-regular fa-calendar-check"></i></div>
+          <div class="ec-text">
+            <span class="ec-label">Final Event Day</span>
+            <span class="ec-value">26 June 2026</span>
+          </div>
+        </div>
+        <div class="event-card ec-2">
+          <div class="ec-icon"><i class="fa-solid fa-location-dot"></i></div>
+          <div class="ec-text">
+            <span class="ec-label">Venue Location</span>
+            <span class="ec-value">Université Française d'Egypte</span>
+          </div>
+        </div>
+        <div class="event-card ec-3">
+          <div class="ec-icon"><i class="fa-solid fa-users-rays" style="color: var(--pink);"></i></div>
+          <div class="ec-text">
+            <span class="ec-label">Hackathon Capacity</span>
+            <span class="ec-value">50 Contestants · 300+ Guests</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="ticker-wrap">
+    <div class="ticker-track">
+      <span class="ticker-item">Innovatera & UFE WorX Hackathon 2026 <span class="ticker-sep"><i class="fa-solid fa-star"></i></span></span>
+      <span class="ticker-item">Women's Health &amp; Environment <span class="ticker-sep"><i class="fa-solid fa-star"></i></span></span>
+      <span class="ticker-item">Minvent UFE <span class="ticker-sep"><i class="fa-solid fa-star"></i></span></span>
+      <span class="ticker-item">20,000 EGP Grand Prize <span class="ticker-sep"><i class="fa-solid fa-star"></i></span></span>
+      <span class="ticker-item">50 Contestants from Across Egypt <span class="ticker-sep"><i class="fa-solid fa-star"></i></span></span>
+      <span class="ticker-item">Innovatera & UFE WorX Hackathon 2026 <span class="ticker-sep"><i class="fa-solid fa-star"></i></span></span>
+      <span class="ticker-item">Women's Health &amp; Environment <span class="ticker-sep"><i class="fa-solid fa-star"></i></span></span>
+      <span class="ticker-item">Minvent UFE <span class="ticker-sep"><i class="fa-solid fa-star"></i></span></span>
+      <span class="ticker-item">20,000 EGP Grand Prize <span class="ticker-sep"><i class="fa-solid fa-star"></i></span></span>
+      <span class="ticker-item">50 Contestants from Across Egypt <span class="ticker-sep"><i class="fa-solid fa-star"></i></span></span>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <div class="stat-num">50<span class="unit">+</span></div>
+        <div class="stat-label">Contestants</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">1K<span class="unit">+</span></div>
+        <div class="stat-label">Livestream Viewers</div>
+      </div>
+    </div>
+  </div>
+
+  <section id="themes">
+    <div class="two-col">
+      <div class="reveal">
+        <div class="section-label">About the Hackathon</div>
+        <h2 class="section-title">Empowering the Next Generation of Female Innovators</h2>
+        <p class="section-sub" style="margin-bottom:16px;">The Innovatera Hackathon is an initiative designed to inspire and empower women in Egypt through technology, innovation, and entrepreneurship. Organized in collaboration with UFE, health and environment entities, and tech communities across Egypt and worldwide.</p>
+        <p class="section-sub">Teams compete to build mobile-first, AI-enabled digital solutions rooted in local culture with real-world scalability — then pitch live before judges at Minvent UFE.</p>
+        <div class="check-list" style="margin-top:30px; display:flex; gap:20px; flex-wrap:wrap;">
+          <div><i class="fa-solid fa-circle-check" style="color:var(--green);"></i> AI-based MVPs encouraged</div>
+          <div><i class="fa-solid fa-circle-check" style="color:var(--green);"></i> English &amp; Arabic supported</div>
+          <div><i class="fa-solid fa-circle-check" style="color:var(--green);"></i> Mentorship included</div>
+          <div><i class="fa-solid fa-circle-check" style="color:var(--green);"></i> Open to all Egyptian unis</div>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.15s">
+        <div class="section-label">Project Tracks</div>
+        <h2 class="section-title">Choose Your Theme</h2>
+        <div class="themes-grid" style="margin-top:20px;">
+          <div class="theme-card theme-health" style="grid-column:1/-1;">
+            <span class="theme-icon"><i class="fa-solid fa-stethoscope" style="color: var(--pink);"></i></span>
+            <h3>Health &amp; Wellbeing</h3>
+            <p>Apps supporting physical, reproductive, or mental health for women. Think telehealth, period tracking, maternal care, nutrition, and mental wellness tools tailored to Egyptian women's needs.</p>
+          </div>
+          <div class="theme-card theme-green" style="grid-column:1/-1;">
+            <span class="theme-icon"><i class="fa-solid fa-leaf" style="color: var(--green);"></i></span>
+            <h3>Green &amp; Sustainable Innovation</h3>
+            <p>Projects that integrate women's empowerment with environmental sustainability — clean energy, waste reduction, climate resilience, or eco-friendly community solutions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="benefits" style="background: var(--bg3); max-width: 100%;">
+    <div style="max-width: 1300px; margin: 0 auto;">
+      <div class="reveal" style="text-align: center;">
+        <div class="section-label" style="justify-content: center;">Why Join Us?</div>
+        <h2 class="section-title">More Than Just a Hackathon</h2>
+      </div>
+      <div class="benefits-grid">
+        <div class="benefit-card reveal">
+          <div class="benefit-icon"><i class="fa-solid fa-network-wired"></i></div>
+          <div class="benefit-title">Networking</div>
+          <div class="benefit-desc">Connect with industry leaders, investors, and like-minded innovators from across Egypt.</div>
+        </div>
+        <div class="benefit-card reveal" style="transition-delay: 0.1s;">
+          <div class="benefit-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+          <div class="benefit-title">Expert Mentorship</div>
+          <div class="benefit-desc">Receive direct guidance from tech and business professionals during the building phase.</div>
+        </div>
+        <div class="benefit-card reveal" style="transition-delay: 0.2s;">
+          <div class="benefit-icon"><i class="fa-solid fa-certificate"></i></div>
+          <div class="benefit-title">Certification</div>
+          <div class="benefit-desc">All selected participants will receive a verified certificate of participation from UFE &amp; Innovatera.</div>
+        </div>
+        <div class="benefit-card reveal" style="transition-delay: 0.3s;">
+          <div class="benefit-icon"><i class="fa-solid fa-lightbulb"></i></div>
+          <div class="benefit-title">Skill Building</div>
+          <div class="benefit-desc">Enhance your coding, pitching, and business modeling skills through intensive bootcamps.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="prizes-section" class="prizes-section">
+    <div class="prizes-inner">
+      <div class="reveal" style="text-align:center; margin-bottom:20px;">
+        <div class="section-label" style="justify-content:center;">Compensation for Winners</div>
+        <h2 class="section-title" style="text-align:center;">Prizes &amp; Recognition</h2>
+        <p class="section-sub" style="margin:0 auto; text-align:center;">Winners receive cash prizes, career mentorship, and continued project support to scale their ideas into reality.</p>
+      </div>
+
+      <div id="first-place-card" class="grand-prize-showcase reveal" style="transition-delay:0.1s;">
+        <div class="grand-badge"><i class="fa-solid fa-crown"></i> Ultimate Winner Takes All</div>
+        <div class="grand-icon"><i class="fa-solid fa-trophy"></i></div>
+        <div class="grand-amount">20,000 EGP</div>
+        <p class="grand-desc">The single best team secures the grand cash prize. Turn your MVP into a thriving startup with our full ecosystem of support.</p>
+        
+        <ul class="grand-perks">
+          <li><i class="fa-solid fa-check"></i> Cash prize of 20,000 EGP</li>
+          <li><i class="fa-solid fa-check"></i> Dedicated project scaling team</li>
+          <li><i class="fa-solid fa-check"></i> Direct investor networking</li>
+          <li><i class="fa-solid fa-check"></i> One year of mentorship</li>
+
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <section id="timeline-section">
+    <div class="reveal">
+      <div class="section-label">Hackathon Steps</div>
+      <h2 class="section-title">From Idea to Launch</h2>
+      <p class="section-sub">Six phases taking you from initial application all the way to the live final day at UFE Campus.</p>
+    </div>
+    <div class="timeline" style="margin-top:50px; max-width:800px;">
+      <div class="tl-item reveal">
+        <div class="tl-dot">1</div>
+        <div class="tl-content">
+          <div class="tl-date"><i class="fa-regular fa-calendar"></i> 6 JUN – 12 JUN 2026</div>
+          <div class="tl-title">Applications Open</div>
+          <div class="tl-desc">Hackathon launch and marketing push. Teams of 1 to 5 members submit their general idea and envisioned deliverable — website, mobile app, AI model, or hardware.</div>
+        </div>
+      </div>
+      <div class="tl-item reveal" style="transition-delay:0.08s;">
+        <div class="tl-dot">2</div>
+        <div class="tl-content">
+          <div class="tl-date"><i class="fa-regular fa-calendar"></i> 13 JUN – 16 JUN 2026</div>
+          <div class="tl-title">Evaluation &amp; Shortlisting</div>
+          <div class="tl-desc">Expert committee reviews all submissions and selects the most promising projects for the mentorship phase.</div>
+        </div>
+      </div>
+      <div class="tl-item reveal" style="transition-delay:0.16s;">
+        <div class="tl-dot">3</div>
+        <div class="tl-content">
+          <div class="tl-date"><i class="fa-regular fa-calendar"></i> 17 JUN – 23 JUN 2026</div>
+          <div class="tl-title">Working Period &amp; Mentorship</div>
+          <div class="tl-desc">Teams notified on June 17. Includes three online sessions covering Tech &amp; Product Thinking, Business Modeling, and Pitch &amp; Demo Prep.</div>
+        </div>
+      </div>
+      <div class="tl-item reveal" style="transition-delay:0.24s;">
+        <div class="tl-dot">4</div>
+        <div class="tl-content">
+          <div class="tl-date"><i class="fa-regular fa-calendar"></i> 24 JUN 2026</div>
+          <div class="tl-title">Project Submission Deadline</div>
+          <div class="tl-desc">Final deadline for teams to submit their completed MVP and pitch decks.</div>
+        </div>
+      </div>
+      <div class="tl-item reveal" style="transition-delay:0.32s;">
+        <div class="tl-dot">5</div>
+        <div class="tl-content">
+          <div class="tl-date"><i class="fa-regular fa-calendar"></i> 25 JUN 2026</div>
+          <div class="tl-title">Jury Review &amp; Finalists Confirmed</div>
+          <div class="tl-desc">The jury evaluates submitted MVPs and announces the finalists advancing to the live event.</div>
+        </div>
+      </div>
+      <div class="tl-item reveal" style="transition-delay:0.4s;">
+        <div class="tl-dot"><i class="fa-solid fa-trophy" style="color:var(--gold);"></i></div>
+        <div class="tl-content" style="border-color:var(--gold); border-width: 2px; background:linear-gradient(135deg, rgba(217,160,28,0.05), var(--bg2));">
+          <div class="tl-date" style="color:#b07d0e;"><i class="fa-solid fa-flag-checkered"></i> 26 JUN 2026 — FINAL DAY</div>
+          <div class="tl-title">Grand Hackathon Day</div>
+          <div class="tl-desc">Offline Rehearsal Day at UFE Campus followed by the Grand Innovatera Hackathon at UFE worX. Live on stage with prizes and certificates.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="mentors-section" style="background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); max-width: 100%;">
+    <div style="max-width: 1300px; margin: 0 auto;">
+      <div class="reveal" style="text-align: center;">
+        <div class="section-label" style="justify-content: center;">Expert Guidance</div>
+        <h2 class="section-title">Meet the Mentors &amp; Jury</h2>
+        <p class="section-sub" style="margin: 0 auto;">Learn from and pitch to top professionals in technology, healthcare, and sustainable innovation.</p>
+      </div>
+      <div class="mentors-grid">
+        <div class="mentor-card reveal">
+          <div class="mentor-avatar"><i class="fa-solid fa-code"></i></div>
+          <div class="mentor-name">Tech &amp; AI Mentors</div>
+          <div class="mentor-role">Software Engineering Experts</div>
+        </div>
+        <div class="mentor-card reveal" style="transition-delay: 0.1s;">
+          <div class="mentor-avatar"><i class="fa-heart-pulse fa-solid"></i></div>
+          <div class="mentor-name">Health Specialists</div>
+          <div class="mentor-role">Medical &amp; Wellbeing Innovators</div>
+        </div>
+        <div class="mentor-card reveal" style="transition-delay: 0.2s;">
+          <div class="mentor-avatar"><i class="fa-seedling fa-solid"></i></div>
+          <div class="mentor-name">Sustainability Leaders</div>
+          <div class="mentor-role">Green Tech Consultants</div>
+        </div>
+        <div class="mentor-card reveal" style="transition-delay: 0.3s;">
+          <div class="mentor-avatar"><i class="fa-chart-line fa-solid"></i></div>
+          <div class="mentor-name">Business Strategists</div>
+          <div class="mentor-role">Startup &amp; Pitch Coaches</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:100px;">
+    <div class="reveal">
+      <div class="section-label">Who Can Apply</div>
+      <h2 class="section-title">Eligibility &amp; Selection Criteria</h2>
+    </div>
+    <div class="criteria-grid">
+      <div class="criteria-card reveal">
+        <div class="criteria-num">01</div>
+        <div class="criteria-text">
+          <h4>Women-Led or Women-Focused</h4>
+          <p>Developed by women, or directly addressing key challenges faced by women in Egypt.</p>
+        </div>
+      </div>
+      <div class="criteria-card reveal" style="transition-delay:0.05s;">
+        <div class="criteria-num">02</div>
+        <div class="criteria-text">
+          <h4>Team of 1 to 5 Members</h4>
+          <p>Students or alumni from UFE or any other university. We highly encourage majority-women teams.</p>
+        </div>
+      </div>
+      <div class="criteria-card reveal" style="transition-delay:0.1s;">
+        <div class="criteria-num">03</div>
+        <div class="criteria-text">
+          <h4>Mobile-First &amp; Scalable</h4>
+          <p>Preferably mobile-first applications that are accessible, scalable, and built for real-world use.</p>
+        </div>
+      </div>
+      <div class="criteria-card reveal" style="transition-delay:0.15s;">
+        <div class="criteria-num">04</div>
+        <div class="criteria-text">
+          <h4>English &amp; / or Arabic</h4>
+          <p>Projects should be developed in English and/or Arabic to ensure inclusivity and local reach.</p>
+        </div>
+      </div>
+      <div class="criteria-card reveal" style="transition-delay:0.2s;">
+        <div class="criteria-num">05</div>
+        <div class="criteria-text">
+          <h4>Culturally Rooted</h4>
+          <p>Solutions rooted in local culture and leveraging local or community resources for maximum impact.</p>
+        </div>
+      </div>
+      <div class="criteria-card reveal" style="transition-delay:0.25s;">
+        <div class="criteria-num">06</div>
+        <div class="criteria-text">
+          <h4>AI Prototypes Encouraged</h4>
+          <p>Teams capable of building an AI-based MVP are highly encouraged — it will strengthen your submission.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="rules-section" style="padding-top: 0;">
+    <div class="reveal" style="text-align: center;">
+      <div class="section-label" style="justify-content: center;">Competition Protocol</div>
+      <h2 class="section-title">Rules &amp; Guidelines</h2>
+    </div>
+    <div class="rules-container">
+      <div class="rule-row reveal">
+        <div class="rule-icon-box"><i class="fa-solid fa-code-merge"></i></div>
+        <div class="rule-content">
+          <h4>Original Work &amp; Intellectual Integrity</h4>
+          <p>All software architectures, database integrations, and digital structures presented must be authored purely during the official building window. Reusing old commercial code blocks is strictly prohibited.</p>
+        </div>
+      </div>
+      <div class="rule-row reveal" style="transition-delay: 0.1s;">
+        <div class="rule-icon-box"><i class="fa-solid fa-people-group"></i></div>
+        <div class="rule-content">
+          <h4>Team Structure &amp; Cooperation</h4>
+          <p>Cross-disciplinary groups combining design, product analysis, and software optimization fields are strongly encouraged. Cross-university collaborations are fully allowed.</p>
+        </div>
+      </div>
+      <div class="rule-row reveal" style="transition-delay: 0.2s;">
+        <div class="rule-icon-box"><i class="fa-solid fa-circle-nodes"></i></div>
+        <div class="rule-content">
+          <h4>Open Source &amp; Submission Openness</h4>
+          <p>To ensure transparent judging, execution repositories (such as GitHub accounts) must be completely public or explicitly shared with the technical evaluation panel.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq-section" style="padding-top:0;">
+    <div class="reveal" style="text-align: center;">
+      <div class="section-label" style="justify-content: center;">Got Questions?</div>
+      <h2 class="section-title">Frequently Asked Questions</h2>
+    </div>
+    <div class="faq-container">
+      <details class="faq-item reveal">
+        <summary class="faq-question">Is there any registration fee to participate?<i class="fa-solid fa-chevron-down"></i></summary>
+        <div class="faq-answer">No, participation in the Innovatera Hackathon is completely free for all selected teams.</div>
+      </details>
+      <details class="faq-item reveal" style="transition-delay: 0.1s;">
+        <summary class="faq-question">Do I need a fully formed team to apply?<i class="fa-solid fa-chevron-down"></i></summary>
+        <div class="faq-answer">You can apply as a solo participant or as a team of up to 5 members. However, we highly recommend having a team with diverse skills (tech, business, design) to build a strong MVP.</div>
+      </details>
+      <details class="faq-item reveal" style="transition-delay: 0.2s;">
+        <summary class="faq-question">Can non-UFE students apply?<i class="fa-solid fa-chevron-down"></i></summary>
+        <div class="faq-answer">Absolutely! The hackathon is open to students and alumni from all Egyptian universities, provided the project meets the women-focused or green tech criteria.</div>
+      </details>
+      <details class="faq-item reveal" style="transition-delay: 0.3s;">
+        <summary class="faq-question">Who owns the intellectual property (IP) of the projects?<i class="fa-solid fa-chevron-down"></i></summary>
+        <div class="faq-answer">You do! Teams retain full ownership of the intellectual property they develop during the hackathon.</div>
+      </details>
+      <details class="faq-item reveal" style="transition-delay: 0.4s;">
+        <summary class="faq-question">Do I need to have a fully working app by the final day?<i class="fa-solid fa-chevron-down"></i></summary>
+        <div class="faq-answer">You need to have a functional Minimum Viable Product (MVP) or a highly interactive prototype that demonstrates your core solution to the judges.</div>
+      </details>
+    </div>
+  </section>
+
+  <section id="contact-section" style="padding-bottom: 60px;">
+    <div class="reveal" style="text-align: center;">
+      <div class="section-label" style="justify-content: center;">Get In Touch</div>
+      <h2 class="section-title">Need Help? Contact Us</h2>
+      <p class="section-sub" style="margin: 0 auto;">Have questions about the application process, themes, or eligibility? We are here to help.</p>
+    </div>
+    <div class="contact-wrap reveal" style="transition-delay: 0.1s;">
+      <div class="contact-item">
+        <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+        <div class="contact-text">
+          <h4>Email Us</h4>
+          <a href="mailto:info@innovatera.tech">info@innovatera.tech</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+        <div class="contact-text">
+          <h4>Location</h4>
+          <p>Université Française d'Egypte</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div id="apply" class="view">
+  <div class="form-section" style="padding-top:140px;">
+    <div class="form-inner">
+      <div class="form-tabs">
+        <button class="tab-btn active" onclick="switchTab('reg')"><i class="fa-solid fa-clipboard-list"></i> Apply to Hackathon</button>
+        <button class="tab-btn" onclick="switchTab('sub')"><i class="fa-solid fa-rocket"></i> Submit MVP</button>
+      </div>
+
+      <div id="reg" class="form-pane active">
+        
+        <div id="reg-form-wrap">
+          <div class="form-header-text">
+            <h3>Hackathon Application</h3>
+            <p>Register your team to participate. You can participate individually or in a team of up to 5 members. Open to students and alumni of UFE and other Egyptian universities.</p>
+          </div>
+          <form onsubmit="handleSubmit(event, 'reg')">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Team Name</label>
+                <input type="text" name="team_name" required placeholder="Your creative team name">
+              </div>
+              <div class="form-group">
+                <label>University / Affiliation</label>
+                <input type="text" name="university" required placeholder="e.g., UFE, Cairo University">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label>Contact Email (Team Leader)</label>
+              <input type="email" name="team_leader_email" required placeholder="team.leader@email.com">
+            </div>
+
+            <div class="form-group">
+              <label>Number of Team Members</label>
+              <select id="memberCount" name="number_of_members" required onchange="generateMemberFields()">
+                <option value="" disabled selected>Select number of members (1-5)</option>
+                <option value="1">1 Member (Solo)</option>
+                <option value="2">2 Members</option>
+                <option value="3">3 Members</option>
+                <option value="4">4 Members</option>
+                <option value="5">5 Members</option>
+              </select>
+            </div>
+
+            <div id="membersContainer"></div>
+
+            <div class="form-group">
+              <label>Project Theme</label>
+              <select name="project_theme" required>
+                <option value="" disabled selected>Choose your track…</option>
+                <option value="Health & Wellbeing">Health &amp; Wellbeing</option>
+                <option value="Green & Sustainable Innovation">Green &amp; Sustainable Innovation</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Idea Proposal</label>
+              <textarea name="idea_proposal" rows="4" required placeholder="Briefly describe the digital solution you plan to build and the problem it solves…"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Envisioned Deliverable</label>
+              <select name="envisioned_deliverable" required>
+                <option value="" disabled selected>What will you build?</option>
+                <option value="Mobile Application">Mobile Application</option>
+                <option value="Web Application / Platform">Web Application / Platform</option>
+                <option value="Hardware / IoT">Hardware / IoT (e.g., ESP32 WROOM, Arduino)</option>
+                <option value="AI / Data Model">AI / Data Model</option>
+              </select>
+            </div>
+            <button type="submit" class="submit-btn">Submit Application <i class="fa-solid fa-paper-plane"></i></button>
+          </form>
+        </div>
+
+        <div class="success-msg" id="reg-success">
+          <div class="check-circle"><i class="fa-solid fa-check"></i></div>
+          <h4>Application Received!</h4>
+          <p>Your team's application has been successfully submitted. The expert committee will review submissions and contact you between June 13–16, 2026.</p>
+          <a href="#" class="btn-outline" onclick="resetForm('reg'); return false;">Submit Another</a>
+        </div>
+
+      </div>
+
+      <div id="sub" class="form-pane">
+        
+        <div id="sub-locked-wrap" style="text-align: center; padding: 20px 10px;">
+          <div style="font-size: 3.5rem; color: var(--muted); margin-bottom: 20px;"><i class="fa-solid fa-lock"></i></div>
+          <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.8rem; color:var(--text); margin-bottom:10px;">Submission Locked</h3>
+          <p style="font-size:1rem; color:var(--muted); line-height: 1.6; margin-bottom: 30px;">The MVP submission portal will automatically unlock on <strong>June 17, 2026</strong>.</p>
+          
+          <div class="countdown-timer">
+            <div class="cd-box"><span id="cd-days">00</span><small>Days</small></div>
+            <div class="cd-box"><span id="cd-hours">00</span><small>Hours</small></div>
+            <div class="cd-box"><span id="cd-mins">00</span><small>Mins</small></div>
+            <div class="cd-box"><span id="cd-secs">00</span><small>Secs</small></div>
+          </div>
+        </div>
+
+        <div id="sub-form-wrap" style="display: none;">
+          <div class="form-header-text">
+            <h3>Final MVP Submission</h3>
+            <p>Submit your working prototype or MVP link for the jury evaluation. Ensure your repository is public or access is granted to the judges.</p>
+          </div>
+          <form onsubmit="handleSubmit(event, 'sub')">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Registered Team Name</label>
+                <input type="text" name="team_name" required placeholder="Must match your application">
+              </div>
+              <div class="form-group">
+                <label>Team Leader Email</label>
+                <input type="email" name="team_leader_email" required placeholder="Registered contact email">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Selected Theme</label>
+              <select name="project_theme" required>
+                <option value="" disabled selected>Choose your project track…</option>
+                <option value="Health & Wellbeing">Health &amp; Wellbeing</option>
+                <option value="Green & Sustainable Innovation">Green &amp; Sustainable Innovation</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Project / MVP Link</label>
+              <input type="url" name="mvp_link" required placeholder="https://github.com/your-repo or live demo URL">
+              <div class="form-hint"><i class="fa-solid fa-circle-info"></i> Ensure the repository is public or access is granted.</div>
+            </div>
+            <div class="form-group">
+              <label>Pitch Deck Link <span style="font-weight:500; text-transform:none; letter-spacing:0; color:var(--muted);">(Optional)</span></label>
+              <input type="url" name="pitch_deck_link" placeholder="https://slides.com/your-deck">
+            </div>
+            <div class="form-group">
+              <label>Brief Project Summary</label>
+              <textarea name="project_summary" rows="4" placeholder="In 2–3 sentences, describe what your MVP does and the impact it creates…"></textarea>
+            </div>
+            <button type="submit" class="submit-btn" style="background:var(--pink);">Submit MVP <i class="fa-solid fa-cloud-arrow-up"></i></button>
+          </form>
+        </div>
+
+        <div class="success-msg" id="sub-success">
+          <div class="check-circle" style="border-color:var(--pink); background:var(--pink-dim); color:var(--pink);"><i class="fa-solid fa-rocket"></i></div>
+          <h4>MVP Submitted!</h4>
+          <p>Your project has been successfully received. Finalists will be announced on June 25, 2026. Good luck!</p>
+          <a href="#" class="btn-outline" onclick="resetForm('sub'); return false;">Submit Another</a>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logos">
+      <div class="logo-box">
+        <img src="https://drive.google.com/thumbnail?id=1YHSMVZhNOvnEnOlBeZNJSorvTc81Dz_f&sz=w1000" alt="UFE Logo">
+      </div>
+      <div class="logo-box">
+        <img src="https://drive.google.com/thumbnail?id=1OiAA-tQINjui2hF2Z77V4ffA1o80Ghz6&sz=w1000" alt="UFE WorX Logo">
+      </div>
+      <div class="logo-box">
+        <img src="https://drive.google.com/thumbnail?id=1co6fiB23OJRrQSuQheJp2WIREZIizok9&sz=w1000" alt="Innovatera Logo">
+      </div>
+      <div class="logo-box">
+        <img src="https://drive.google.com/thumbnail?id=1fVu60qgixeF87EMXFwKGzBvMCcRaz_PB&sz=w1000" alt="Institut Français">
+      </div>
+      <div class="logo-box">
+        <img src="https://drive.google.com/thumbnail?id=1VfqNR8y9EnikQGwhRlhd9A5ZnsLL3Nxf&sz=w1000" alt="Ambassade de France">
+      </div>
+    </div>
+
+    <p class="footer-desc">Tech Solutions for Women's Health &amp; the Environment · Organized by Innovatera in collaboration with UFE WorX &amp; Minvent</p>
+    <div style="width:100%; height:1px; background:var(--border); margin:30px 0;"></div>
+    <div class="footer-copy">© 2026 Innovatera · Minvent UFE · All rights reserved</div>
+  </div>
+</footer>
+
+<script>
+// ── View switching ──
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => {
+    v.classList.remove('active');
+  });
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Scroll to section (within landing) ──
+function scrollToSection(id) {
+  showView('landing');
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) {
+      const yOffset = -80; 
+      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({top: y, behavior: 'smooth'});
+    }
+  }, 100);
+}
+
+// ── Form tabs ──
+function switchTab(id) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', (i === 0 && id === 'reg') || (i === 1 && id === 'sub'));
+  });
+  document.querySelectorAll('.form-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ── Dynamic Member Fields ──
+function generateMemberFields() {
+  const count = parseInt(document.getElementById('memberCount').value) || 0;
+  const container = document.getElementById('membersContainer');
+  container.innerHTML = '';
+  
+  if(count > 0) {
+    let html = `<div class="form-row" style="margin-top: 10px;">`;
+    for(let i = 1; i <= count; i++) {
+      const label = i === 1 ? `Team Leader (Member 1) Full Name` : `Member ${i} Full Name`;
+      html += `
+        <div class="form-group" style="animation: fadeUp 0.3s ease both; animation-delay: ${i*0.05}s;">
+          <label>${label}</label>
+          <input type="text" name="member_${i}_name" required placeholder="Enter full name">
+        </div>
+      `;
+      if(i % 2 === 0 && i !== count) {
+        html += `</div><div class="form-row">`;
+      }
+    }
+    html += `</div>`;
+    container.innerHTML = html;
+  }
+}
+
+// ── Background synchronization fallback ──
+function resetForm(paneId) {
+  document.getElementById(paneId + '-success').style.display = 'none';
+  document.getElementById(paneId + '-form-wrap').style.display = 'block';
+}
+
+function handleSubmit(e, paneId) {
+  e.preventDefault();
+  
+  const form = e.target;
+  
+  document.getElementById(paneId + '-form-wrap').style.display = 'none';
+  document.getElementById(paneId + '-success').style.display = 'block';
+
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 },
+    colors: ['#6DA32D', '#D9A01C', '#C72D88', '#2256CC']
+  });
+
+  const rawFormData = new FormData(form);
+  rawFormData.append("form_type", paneId === 'reg' ? 'Application' : 'MVP Submission');
+  const data = new URLSearchParams(rawFormData).toString();
+
+  const endpoint = 'https://script.google.com/macros/s/AKfycbw3oS3w1HaUBylj5xqVxjQWLPEgsEnWONaS1oVYDnwCIfvidkSqE5qR-aeihzH5ED_XPA/exec';
+
+  fetch(endpoint, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: data
+  }).catch(err => console.error("Background sync failed:", err));
+
+  form.reset(); 
+}
+
+// ── Scroll reveal ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── FAQ Accordion Exclusive Logic ──
+const detailsElements = document.querySelectorAll('.faq-item');
+detailsElements.forEach(targetDetail => {
+  targetDetail.addEventListener("click", () => {
+    detailsElements.forEach(detail => {
+      if (detail !== targetDetail) {
+        detail.removeAttribute("open");
+      }
+    });
+  });
+});
+
+// ── Counter animation ──
+function animateCounter(el, target, suffix = '') {
+  let current = 0;
+  const duration = 2000;
+  const step = target / (duration / 16);
+  const timer = setInterval(() => {
+    current += step;
+    if (current >= target) {
+      current = target;
+      clearInterval(timer);
+    }
+    el.innerHTML = Math.floor(current) + suffix;
+  }, 16);
+}
+
+// Observe stats
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const nums = entry.target.querySelectorAll('.stat-num');
+      nums[0] && animateCounter(nums[0].childNodes[0] || nums[0], 50, '<span class="unit">+</span>');
+      nums[1] && animateCounter(nums[1].childNodes[0] || nums[1], 1, 'K<span class="unit">+</span>');
+      statsObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+
+const statsEl = document.querySelector('.stats-bar');
+if (statsEl) statsObserver.observe(statsEl);
+
+// ── Re-triggerable Confetti for 1st Place ──
+let isConfettiFiring = false;
+const prizeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !isConfettiFiring) {
+      isConfettiFiring = true;
+      
+      var duration = 3000;
+      var end = Date.now() + duration;
+
+      (function frame() {
+        confetti({
+          particleCount: 6,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: ['#D9A01C', '#6DA32D', '#C72D88', '#2256CC']
+        });
+        confetti({
+          particleCount: 6,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: ['#D9A01C', '#6DA32D', '#C72D88', '#2256CC']
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        } else {
+          isConfettiFiring = false;
+        }
+      }());
+    }
+  });
+}, { threshold: 0.6 }); 
+
+const firstPlaceCard = document.getElementById('first-place-card');
+if (firstPlaceCard) prizeObserver.observe(firstPlaceCard);
+
+// ── MVP SUBMISSION LOCK TIMER ──
+const targetDate = new Date('June 17, 2026 00:00:00').getTime();
+
+function updateCountdown() {
+  const now = new Date().getTime();
+  const distance = targetDate - now;
+
+  const formWrap = document.getElementById('sub-form-wrap');
+  const lockedWrap = document.getElementById('sub-locked-wrap');
+  const successMsg = document.getElementById('sub-success');
+
+  if (distance < 0) {
+    if (formWrap && successMsg.style.display !== 'block') {
+      formWrap.style.display = 'block';
+    }
+    if (lockedWrap) {
+      lockedWrap.style.display = 'none';
+    }
+    return;
+  } 
+  
+  if (formWrap) formWrap.style.display = 'none';
+  if (lockedWrap) lockedWrap.style.display = 'block';
+
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  document.getElementById('cd-days').innerText = days.toString().padStart(2, '0');
+  document.getElementById('cd-hours').innerText = hours.toString().padStart(2, '0');
+  document.getElementById('cd-mins').innerText = minutes.toString().padStart(2, '0');
+  document.getElementById('cd-secs').innerText = seconds.toString().padStart(2, '0');
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+</script>
+</body>
+</html>
