@@ -562,7 +562,6 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
       <img src="https://drive.google.com/thumbnail?id=1OiAA-tQINjui2hF2Z77V4ffA1o80Ghz6&sz=w1000" alt="UFE WorX Logo" class="nav-logo-img">
     </div>
 
-    <!-- Navigation Links (Hidden on Mobile) -->
     <div class="nav-links" id="nav-links">
       <a onclick="showView('landing')">Home</a>
       <a onclick="scrollToSection('themes')">Themes</a>
@@ -994,16 +993,21 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
               </div>
             </div>
             
-            <div class="form-group">
-              <label>Contact Email (Team Leader)</label>
-              <input type="email" name="team_leader_email" required placeholder="team.leader@email.com">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Contact Email (Team Leader)</label>
+                <input type="email" name="team_leader_email" required placeholder="team.leader@email.com">
+              </div>
+              <div class="form-group">
+                <label>Phone Number (Team Leader)</label>
+                <input type="tel" name="team_leader_phone" required placeholder="e.g., +20 1x xxx xxxx">
+              </div>
             </div>
 
             <div class="form-group">
               <label>Number of Team Members</label>
               <select id="memberCount" name="number_of_members" required onchange="generateMemberFields()">
-                <option value="" disabled selected>Select number of members (1-5)</option>
-                <option value="1">1 Member (Solo)</option>
+                <option value="" disabled selected>Select number of members (2-5)</option>
                 <option value="2">2 Members</option>
                 <option value="3">3 Members</option>
                 <option value="4">4 Members</option>
