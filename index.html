@@ -976,10 +976,19 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
 
       <div id="reg" class="form-pane active">
         
+        <div id="reg-locked-wrap" style="display: none; text-align: center; padding: 20px 10px;">
+          <div style="font-size: 3.5rem; color: var(--muted); margin-bottom: 20px;"><i class="fa-solid fa-lock"></i></div>
+          <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.8rem; color:var(--text); margin-bottom:10px;">Registration Closed</h3>
+          <p style="font-size:1rem; color:var(--muted); line-height: 1.6; margin-bottom: 30px;">The application window for the Innovatera Hackathon ended on <strong>June 22, 2026</strong>.</p>
+        </div>
+
         <div id="reg-form-wrap">
           <div class="form-header-text">
             <h3>Hackathon Application</h3>
-            <p>Register your team to participate. You can participate individually or in a team of up to 5 members. Open to students and alumni of UFE and other Egyptian universities.</p>
+            <p>Register your team to participate. You can participate in a team of up to 5 members. Open to students and alumni of UFE and other Egyptian universities.</p>
+            <div style="display: inline-block; background: var(--pink-dim); color: var(--pink); padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; margin-top: 15px;">
+               <i class="fa-solid fa-clock"></i> Closes in: <span id="reg-cd">00d 00h 00m 00s</span>
+            </div>
           </div>
           <form onsubmit="handleSubmit(event, 'reg')">
             <div class="form-row">
@@ -1057,7 +1066,7 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
         <div id="sub-locked-wrap" style="text-align: center; padding: 20px 10px;">
           <div style="font-size: 3.5rem; color: var(--muted); margin-bottom: 20px;"><i class="fa-solid fa-lock"></i></div>
           <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.8rem; color:var(--text); margin-bottom:10px;">Submission Locked</h3>
-          <p style="font-size:1rem; color:var(--muted); line-height: 1.6; margin-bottom: 30px;">The MVP submission portal will automatically unlock on <strong>June 17, 2026</strong>.</p>
+          <p style="font-size:1rem; color:var(--muted); line-height: 1.6; margin-bottom: 30px;">The MVP submission portal will automatically unlock on <strong>June 22, 2026</strong>.</p>
           
           <div class="countdown-timer">
             <div class="cd-box"><span id="cd-days">00</span><small>Days</small></div>
@@ -1079,8 +1088,8 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
                 <input type="text" name="team_name" required placeholder="Must match your application">
               </div>
               <div class="form-group">
-                <label>Team Leader Email</label>
-                <input type="email" name="team_leader_email" required placeholder="Registered contact email">
+                <label>Team Leader mobile</label>
+                <input type="email" name="team_leader_mobile" required placeholder="Registered contact phone">
               </div>
             </div>
             <div class="form-group">
@@ -1111,7 +1120,7 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
         <div class="success-msg" id="sub-success">
           <div class="check-circle" style="border-color:var(--pink); background:var(--pink-dim); color:var(--pink);"><i class="fa-solid fa-rocket"></i></div>
           <h4>MVP Submitted!</h4>
-          <p>Your project has been successfully received. Finalists will be announced on June 25, 2026. Good luck!</p>
+          <p>Your project has been successfully received. Good luck!</p>
           <a href="#" class="btn-outline" onclick="resetForm('sub'); return false;">Submit Another</a>
         </div>
 
@@ -1207,7 +1216,7 @@ function generateMemberFields() {
 // ── Background synchronization fallback ──
 function resetForm(paneId) {
   document.getElementById(paneId + '-success').style.display = 'none';
-  document.getElementById(paneId + '-form-wrap').style.display = 'block';
+  updateTimers(); // Force the layout state to recalculate
 }
 
 function handleSubmit(e, paneId) {
@@ -1335,43 +1344,73 @@ const prizeObserver = new IntersectionObserver((entries) => {
 const firstPlaceCard = document.getElementById('first-place-card');
 if (firstPlaceCard) prizeObserver.observe(firstPlaceCard);
 
-// ── MVP SUBMISSION LOCK TIMER ──
-const targetDate = new Date('June 17, 2026 00:00:00').getTime();
+// ── TIMERS & LOCK LOGIC ──
+const regDeadline = new Date('June 22, 2026 23:59:59').getTime();
+const subUnlockDate = new Date('June 22, 2026 00:00:00').getTime();
 
-function updateCountdown() {
+function updateTimers() {
   const now = new Date().getTime();
-  const distance = targetDate - now;
 
-  const formWrap = document.getElementById('sub-form-wrap');
-  const lockedWrap = document.getElementById('sub-locked-wrap');
-  const successMsg = document.getElementById('sub-success');
+  // 1. REGISTRATION LOGIC (Closes at deadline)
+  const regDistance = regDeadline - now;
+  const regFormWrap = document.getElementById('reg-form-wrap');
+  const regLockedWrap = document.getElementById('reg-locked-wrap');
+  const regSuccessMsg = document.getElementById('reg-success');
 
-  if (distance < 0) {
-    if (formWrap && successMsg.style.display !== 'block') {
-      formWrap.style.display = 'block';
+  if (regDistance < 0) {
+    // Deadline passed - lock it
+    if (regFormWrap) regFormWrap.style.display = 'none';
+    if (regSuccessMsg) regSuccessMsg.style.display = 'none';
+    if (regLockedWrap) regLockedWrap.style.display = 'block';
+  } else {
+    // Still open
+    if (regLockedWrap) regLockedWrap.style.display = 'none';
+    // Only show form if success msg isn't showing
+    if (regFormWrap && regSuccessMsg.style.display !== 'block') {
+        regFormWrap.style.display = 'block';
+        
+        // Update countdown on open form
+        const d = Math.floor(regDistance / (1000 * 60 * 60 * 24));
+        const h = Math.floor((regDistance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((regDistance % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((regDistance % (1000 * 60)) / 1000);
+        document.getElementById('reg-cd').innerText = `${d}d ${h}h ${m}m ${s}s`;
     }
-    if (lockedWrap) {
-      lockedWrap.style.display = 'none';
+  }
+
+  // 2. MVP SUBMISSION LOGIC (Opens at deadline)
+  const subDistance = subUnlockDate - now;
+  const subFormWrap = document.getElementById('sub-form-wrap');
+  const subLockedWrap = document.getElementById('sub-locked-wrap');
+  const subSuccessMsg = document.getElementById('sub-success');
+
+  if (subDistance < 0) {
+    // Unlocked
+    if (subFormWrap && subSuccessMsg.style.display !== 'block') {
+      subFormWrap.style.display = 'block';
     }
-    return;
-  } 
-  
-  if (formWrap) formWrap.style.display = 'none';
-  if (lockedWrap) lockedWrap.style.display = 'block';
+    if (subLockedWrap) {
+      subLockedWrap.style.display = 'none';
+    }
+  } else {
+    // Locked - update countdown
+    if (subFormWrap) subFormWrap.style.display = 'none';
+    if (subLockedWrap) subLockedWrap.style.display = 'block';
 
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    const days = Math.floor(subDistance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((subDistance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((subDistance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((subDistance % (1000 * 60)) / 1000);
 
-  document.getElementById('cd-days').innerText = days.toString().padStart(2, '0');
-  document.getElementById('cd-hours').innerText = hours.toString().padStart(2, '0');
-  document.getElementById('cd-mins').innerText = minutes.toString().padStart(2, '0');
-  document.getElementById('cd-secs').innerText = seconds.toString().padStart(2, '0');
+    document.getElementById('cd-days').innerText = days.toString().padStart(2, '0');
+    document.getElementById('cd-hours').innerText = hours.toString().padStart(2, '0');
+    document.getElementById('cd-mins').innerText = minutes.toString().padStart(2, '0');
+    document.getElementById('cd-secs').innerText = seconds.toString().padStart(2, '0');
+  }
 }
 
-updateCountdown();
-setInterval(updateCountdown, 1000);
+updateTimers();
+setInterval(updateTimers, 1000);
 
 </script>
 </body>
