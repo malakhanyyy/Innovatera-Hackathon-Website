@@ -79,7 +79,7 @@ header {
   border-bottom: 1px solid var(--border);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
-  transform: translateZ(0); /* Prevents scroll flickering/gaps on WebKit */
+  transform: translateZ(0);
 }
 
 nav {
@@ -144,9 +144,13 @@ nav {
   border-radius: 2px;
 }
 
-.nav-links a:not(.nav-cta):hover { 
+.nav-links a:not(.nav-cta):not(.pink-nav):hover { 
   color: var(--text); 
   transform: translateY(-1px);
+}
+
+.pink-nav::after {
+  background-color: var(--pink) !important;
 }
 
 .nav-links a:not(.nav-cta):hover::after {
@@ -179,7 +183,7 @@ nav {
 .hero {
   position:relative;
   min-height:100vh;
-  min-height:100dvh; /* Adapts properly when mobile address bar hides */
+  min-height:100dvh;
   display:flex;
   align-items:center;
   padding:160px 5% 80px;
@@ -323,6 +327,16 @@ h1 .accent-pink { color:var(--pink); }
   box-shadow: 0 4px 15px var(--green-glow);
 }
 .btn-primary:hover { background:#5a8a25; transform:translateY(-3px); box-shadow:0 8px 25px var(--green-glow); }
+
+.btn-pink {
+  background: var(--pink); color: var(--white); border: none;
+  padding: 16px 36px; border-radius: 10px;
+  font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1rem;
+  cursor: pointer; transition: all 0.3s ease; letter-spacing: 0.02em;
+  box-shadow: 0 4px 15px rgba(199, 45, 136, 0.3);
+}
+.btn-pink:hover { background: #a62370; transform: translateY(-3px); box-shadow: 0 8px 25px rgba(199, 45, 136, 0.4); }
+
 .btn-outline {
   background:var(--bg2); color:var(--text); border:1px solid var(--border);
   padding:16px 36px; border-radius:10px;
@@ -481,6 +495,98 @@ section { padding:100px 5%; max-width:1300px; margin:0 auto; }
 .cd-box span { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 800; color: var(--pink); line-height: 1; }
 .cd-box small { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; font-weight: 600; margin-top: 5px; letter-spacing: 0.05em; }
 
+/* ── VOTING SYSTEM ── */
+.projects-vote-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+  gap: 20px; 
+  margin-top: 30px; 
+}
+.vote-card { 
+  background: var(--bg); 
+  border: 1px solid var(--border); 
+  border-radius: 16px; 
+  padding: 24px 20px; 
+  text-align: center; 
+  box-shadow: var(--shadow-sm); 
+  transition: transform 0.3s ease, border-color 0.3s ease; 
+}
+.vote-card:hover { 
+  transform: translateY(-5px); 
+  border-color: var(--pink); 
+  box-shadow: var(--shadow-md); 
+}
+.vote-card h4 { 
+  font-family: 'Outfit', sans-serif; 
+  font-size: 1.2rem; 
+  color: var(--text); 
+  margin-bottom: 8px; 
+}
+.vote-card p { 
+  font-size: 0.85rem; 
+  color: var(--muted); 
+  line-height: 1.5; 
+  margin-bottom: 20px; 
+}
+.creative-vote-btn { 
+  background: var(--bg2); 
+  border: 2px solid var(--border); 
+  border-radius: 50px; 
+  padding: 12px 20px; 
+  font-family: 'Outfit', sans-serif; 
+  font-weight: 700; 
+  font-size: 0.95rem; 
+  color: var(--muted); 
+  cursor: pointer; 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center;
+  gap: 8px; 
+  width: 100%;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+.creative-vote-btn i { 
+  font-size: 1.1rem; 
+  transition: transform 0.3s ease, color 0.3s ease; 
+}
+
+/* Ensure the voted state stays pink even if it's disabled via Javascript */
+.creative-vote-btn.voted,
+.creative-vote-btn.voted:hover,
+.creative-vote-btn.voted:disabled { 
+  background: var(--pink) !important; 
+  border-color: var(--pink) !important; 
+  color: var(--white) !important; 
+  cursor: default !important;
+  box-shadow: 0 4px 15px rgba(199,45,136,0.3) !important;
+  opacity: 1 !important;
+}
+
+.creative-vote-btn:hover:not(.voted):not(:disabled) {
+  border-color: var(--pink);
+  color: var(--pink);
+  background: var(--pink-dim);
+}
+
+.creative-vote-btn.voted i { 
+  animation: heartBeat 0.8s ease-in-out infinite alternate; 
+  color: var(--white) !important;
+}
+
+/* Normal unclicked buttons fade when disabled */
+.creative-vote-btn:disabled:not(.voted) {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  background: var(--bg);
+  border-color: var(--border);
+}
+
+@keyframes heartBeat { 
+  0% { transform: scale(1); } 
+  100% { transform: scale(1.3); } 
+}
+
 /* ── FOOTER ── */
 footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center; background: var(--bg2); }
 .footer-inner { max-width:1300px; margin:0 auto; }
@@ -504,7 +610,7 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
   }
   
   nav {
-    justify-content: center; /* Center the logos */
+    justify-content: center;
   }
 
   .nav-logo {
@@ -514,11 +620,10 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
   }
 
   .nav-logo-img { 
-    height: 60px; /* Properly sized for mobile centering */
+    height: 60px; 
     max-width: 45%; 
   }
   
-  /* Completely hide nav links on mobile */
   .nav-links {
     display: none !important;
   }
@@ -537,6 +642,7 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
   .form-row { grid-template-columns:1fr; }
   .grand-amount { font-size: 3rem; }
   .form-inner { padding: 30px 20px; }
+  .form-tabs { flex-direction: column; }
 }
 
 @media(max-width:600px){
@@ -567,9 +673,10 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
       <a onclick="scrollToSection('themes')">Themes</a>
       <a onclick="scrollToSection('prizes-section')">Prizes</a>
       <a onclick="scrollToSection('timeline-section')">Timeline</a>
+      <a class="pink-nav" onclick="showView('apply'); switchTab('vote');" style="color: var(--pink); font-weight: 800;">Vote</a>
       <a onclick="scrollToSection('faq-section')">FAQ</a>
       <a onclick="scrollToSection('contact-section')">Contact</a>
-      <a onclick="showView('apply')" class="nav-cta">Apply Now <i class="fa-solid fa-arrow-right"></i></a>
+      <a onclick="showView('apply'); switchTab('reg');" class="nav-cta">Apply Now <i class="fa-solid fa-arrow-right"></i></a>
     </div>
   </nav>
 </header>
@@ -590,7 +697,8 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
         <h1>Tech Solutions for<br><span class="accent">Women's Health</span><br>&amp; the <span class="accent-pink">Environment</span></h1>
         <p class="hero-sub">Step onto the premier innovation stage at UFE. Devise scalable digital products engineered to solve complex systemic challenges, secure immediate capitalization paths, and build lasting legacy.</p>
         <div class="hero-actions">
-          <button class="btn-primary" onclick="showView('apply')">Start Application</button>
+          <button class="btn-primary" onclick="showView('apply'); switchTab('reg');">Start Application</button>
+          <button class="btn-pink" onclick="showView('apply'); switchTab('vote');">Vote Now <i class="fa-solid fa-heart" style="margin-left: 6px;"></i></button>
           <button class="btn-outline" onclick="scrollToSection('prizes-section')">View Prizes <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i></button>
         </div>
       </div>
@@ -969,9 +1077,11 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
 <div id="apply" class="view">
   <div class="form-section" style="padding-top:140px;">
     <div class="form-inner">
+      
       <div class="form-tabs">
-        <button class="tab-btn active" onclick="switchTab('reg')"><i class="fa-solid fa-clipboard-list"></i> Apply to Hackathon</button>
+        <button class="tab-btn active" onclick="switchTab('reg')"><i class="fa-solid fa-clipboard-list"></i> Apply</button>
         <button class="tab-btn" onclick="switchTab('sub')"><i class="fa-solid fa-rocket"></i> Submit MVP</button>
+        <button class="tab-btn" onclick="switchTab('vote')"><i class="fa-solid fa-heart"></i> Public Vote</button>
       </div>
 
       <div id="reg" class="form-pane active">
@@ -1083,15 +1193,15 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
           </div>
           <form onsubmit="handleSubmit(event, 'sub')">
             <div class="form-row">
-              <div class="form-group">
-                <label>Registered Team Name</label>
-                <input type="text" name="team_name" required placeholder="Must match your application">
-              </div>
-              <div class="form-group">
-                <label>Team Leader mobile</label>
-                <input type="email" name="team_leader_mobile" required placeholder="Registered contact phone">
-              </div>
-            </div>
+  <div class="form-group">
+    <label>Registered Team Name</label>
+    <input type="text" name="team_name" required placeholder="Must match your application">
+  </div>
+  <div class="form-group">
+    <label>Team Leader Phone</label>
+    <input type="tel" name="team_leader_mobile" required placeholder="+20 1x xxx xxxx">
+  </div>
+</div>
             <div class="form-group">
               <label>Selected Theme</label>
               <select name="project_theme" required>
@@ -1106,12 +1216,12 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
               <div class="form-hint"><i class="fa-solid fa-circle-info"></i> Ensure the repository is public or access is granted.</div>
             </div>
             <div class="form-group">
-              <label>Pitch Deck Link <span style="font-weight:500; text-transform:none; letter-spacing:0; color:var(--muted);">(Optional)</span></label>
-              <input type="url" name="pitch_deck_link" placeholder="https://slides.com/your-deck">
+              <label>Pitch Deck Link <span style="font-weight:500; text-transform:none; letter-spacing:0; color:var(--muted);"></span></label>
+              <input type="url" name="pitch_deck_link" required placeholder="https://slides.com/your-deck">
             </div>
             <div class="form-group">
               <label>Brief Project Summary</label>
-              <textarea name="project_summary" rows="4" placeholder="In 2–3 sentences, describe what your MVP does and the impact it creates…"></textarea>
+              <textarea name="project_summary" required rows="4" placeholder="In 2–3 sentences, describe what your MVP does and the impact it creates…"></textarea>
             </div>
             <button type="submit" class="submit-btn" style="background:var(--pink);">Submit MVP <i class="fa-solid fa-cloud-arrow-up"></i></button>
           </form>
@@ -1126,7 +1236,60 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
 
       </div>
 
-    </div>
+      <div id="vote" class="form-pane">
+        
+        <div id="vote-locked-wrap" style="text-align: center; padding: 20px 10px;">
+          <div style="font-size: 3.5rem; color: var(--muted); margin-bottom: 20px;"><i class="fa-solid fa-lock"></i></div>
+          <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.8rem; color:var(--text); margin-bottom:10px;">Voting Locked</h3>
+          <p style="font-size:1rem; color:var(--muted); line-height: 1.6; margin-bottom: 30px;">The public voting portal will unlock on <strong>June 24, 2026</strong> once all MVPs are submitted.</p>
+          
+          <div class="countdown-timer">
+            <div class="cd-box"><span id="vote-cd-days">00</span><small>Days</small></div>
+            <div class="cd-box"><span id="vote-cd-hours">00</span><small>Hours</small></div>
+            <div class="cd-box"><span id="vote-cd-mins">00</span><small>Mins</small></div>
+            <div class="cd-box"><span id="vote-cd-secs">00</span><small>Secs</small></div>
+          </div>
+        </div>
+
+        <div id="vote-form-wrap" style="display: none;">
+          <div class="form-header-text">
+            <h3>Vote for Your Favorite Project</h3>
+            <p>Support your fellow innovators! Enter your name and cast your single vote to help decide the crowd favorite.</p>
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 10px;">
+            <label>Voter Name</label>
+            <input type="text" id="voter-name" placeholder="Enter your full name to unlock voting" required>
+          </div>
+
+ <div class="projects-vote-grid">
+  <div class="vote-card">
+    <h4>Calyx</h4>
+    <button class="creative-vote-btn" onclick="castVote(event, 'Calyx', '1')">
+      <i class="fa-solid fa-heart"></i>
+      <span class="vote-text">Vote for Calyx</span>
+    </button>
+  </div>
+
+  <div class="vote-card">
+    <h4>BioStick</h4>
+    <button class="creative-vote-btn" onclick="castVote(event, 'BioStick', '2')">
+      <i class="fa-solid fa-heart"></i>
+      <span class="vote-text">Vote for BioStick</span>
+    </button>
+  </div>
+
+  <div class="vote-card">
+    <h4>FoodSense</h4>
+    <button class="creative-vote-btn" onclick="castVote(event, 'FoodSense', '3')">
+      <i class="fa-solid fa-heart"></i>
+      <span class="vote-text">Vote for FoodSense</span>
+    </button>
+  </div>
+</div>
+        </div>
+      </div>
+      </div>
   </div>
 </div>
 
@@ -1157,6 +1320,9 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
 </footer>
 
 <script>
+// IMPORTANT: Please verify this is your exact Web App URL
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxvzuo1jOTqsar_hl3yurH_X6y3CgKrTU6puFJe79-c-rBsi0zQ5dV59DZUt0gdtqw3Kg/exec';
+
 // ── View switching ──
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => {
@@ -1181,8 +1347,8 @@ function scrollToSection(id) {
 
 // ── Form tabs ──
 function switchTab(id) {
-  document.querySelectorAll('.tab-btn').forEach((b, i) => {
-    b.classList.toggle('active', (i === 0 && id === 'reg') || (i === 1 && id === 'sub'));
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.getAttribute('onclick').includes(id));
   });
   document.querySelectorAll('.form-pane').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -1196,17 +1362,15 @@ function generateMemberFields() {
   
   if(count > 0) {
     let html = `<div class="form-row" style="margin-top: 10px;">`;
-    for(let i = 1; i <= count; i++) {
-      const label = i === 1 ? `Team Leader (Member 1) Full Name` : `Member ${i} Full Name`;
+    for(let i = 1; i <= 5; i++) { // Always generate 5 fields, but make 2-5 optional or hidden if needed
+      const isRequired = i <= count ? "required" : "";
+      const display = i <= count ? "block" : "none";
       html += `
-        <div class="form-group" style="animation: fadeUp 0.3s ease both; animation-delay: ${i*0.05}s;">
-          <label>${label}</label>
-          <input type="text" name="member_${i}_name" required placeholder="Enter full name">
+        <div class="form-group member-field" style="display: ${display};">
+          <label>Member ${i} Name</label>
+          <input type="text" name="member_${i}_name" ${isRequired} placeholder="Enter full name">
         </div>
       `;
-      if(i % 2 === 0 && i !== count) {
-        html += `</div><div class="form-row">`;
-      }
     }
     html += `</div>`;
     container.innerHTML = html;
@@ -1216,12 +1380,11 @@ function generateMemberFields() {
 // ── Background synchronization fallback ──
 function resetForm(paneId) {
   document.getElementById(paneId + '-success').style.display = 'none';
-  updateTimers(); // Force the layout state to recalculate
+  updateTimers(); 
 }
 
 function handleSubmit(e, paneId) {
   e.preventDefault();
-  
   const form = e.target;
   
   document.getElementById(paneId + '-form-wrap').style.display = 'none';
@@ -1238,9 +1401,7 @@ function handleSubmit(e, paneId) {
   rawFormData.append("form_type", paneId === 'reg' ? 'Application' : 'MVP Submission');
   const data = new URLSearchParams(rawFormData).toString();
 
-  const endpoint = 'https://script.google.com/macros/s/AKfycbw3oS3w1HaUBylj5xqVxjQWLPEgsEnWONaS1oVYDnwCIfvidkSqE5qR-aeihzH5ED_XPA/exec';
-
-  fetch(endpoint, {
+  fetch(SCRIPT_URL, {
     method: 'POST',
     mode: 'no-cors',
     headers: {
@@ -1250,6 +1411,45 @@ function handleSubmit(e, paneId) {
   }).catch(err => console.error("Background sync failed:", err));
 
   form.reset(); 
+}
+
+// ── FIXED VOTING LOGIC ──
+let userHasVoted = false; 
+
+function castVote(event, projectName, voteValue) {
+  if (userHasVoted) return; 
+
+  const voterNameInput = document.getElementById('voter-name');
+  const voterName = voterNameInput.value.trim();
+
+  if (!voterName) {
+    alert("Please enter your name!");
+    voterNameInput.focus();
+    return;
+  }
+
+  const btn = event.currentTarget;
+  userHasVoted = true; 
+
+  confetti({ particleCount: 50, spread: 60, origin: { y: 0.5 } });
+
+  btn.classList.add('voted');
+  btn.querySelector('.vote-text').innerText = "Voted!";
+  document.querySelectorAll('.creative-vote-btn').forEach(b => b.disabled = true);
+
+  // Send to Script with the project-specific voteValue
+  const data = new URLSearchParams();
+  data.append("form_type", "Public Vote");
+  data.append("voter_name", voterName);
+  data.append("project_name", projectName);
+  data.append("vote_value", voteValue); // Now sends 1, 2, or 3
+
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: data.toString()
+  }).catch(err => console.error("Sync failed:", err));
 }
 
 // ── Scroll reveal ──
@@ -1347,29 +1547,25 @@ if (firstPlaceCard) prizeObserver.observe(firstPlaceCard);
 // ── TIMERS & LOCK LOGIC ──
 const regDeadline = new Date('June 22, 2026 23:59:59').getTime();
 const subUnlockDate = new Date('June 22, 2026 00:00:00').getTime();
+const voteUnlockDate = new Date('June 24, 2026 00:00:00').getTime();
 
 function updateTimers() {
   const now = new Date().getTime();
 
-  // 1. REGISTRATION LOGIC (Closes at deadline)
+  // 1. REGISTRATION LOGIC
   const regDistance = regDeadline - now;
   const regFormWrap = document.getElementById('reg-form-wrap');
   const regLockedWrap = document.getElementById('reg-locked-wrap');
   const regSuccessMsg = document.getElementById('reg-success');
 
   if (regDistance < 0) {
-    // Deadline passed - lock it
     if (regFormWrap) regFormWrap.style.display = 'none';
     if (regSuccessMsg) regSuccessMsg.style.display = 'none';
     if (regLockedWrap) regLockedWrap.style.display = 'block';
   } else {
-    // Still open
     if (regLockedWrap) regLockedWrap.style.display = 'none';
-    // Only show form if success msg isn't showing
     if (regFormWrap && regSuccessMsg.style.display !== 'block') {
         regFormWrap.style.display = 'block';
-        
-        // Update countdown on open form
         const d = Math.floor(regDistance / (1000 * 60 * 60 * 24));
         const h = Math.floor((regDistance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const m = Math.floor((regDistance % (1000 * 60 * 60)) / (1000 * 60));
@@ -1378,22 +1574,16 @@ function updateTimers() {
     }
   }
 
-  // 2. MVP SUBMISSION LOGIC (Opens at deadline)
+  // 2. MVP SUBMISSION LOGIC
   const subDistance = subUnlockDate - now;
   const subFormWrap = document.getElementById('sub-form-wrap');
   const subLockedWrap = document.getElementById('sub-locked-wrap');
   const subSuccessMsg = document.getElementById('sub-success');
 
   if (subDistance < 0) {
-    // Unlocked
-    if (subFormWrap && subSuccessMsg.style.display !== 'block') {
-      subFormWrap.style.display = 'block';
-    }
-    if (subLockedWrap) {
-      subLockedWrap.style.display = 'none';
-    }
+    if (subFormWrap && subSuccessMsg.style.display !== 'block') subFormWrap.style.display = 'block';
+    if (subLockedWrap) subLockedWrap.style.display = 'none';
   } else {
-    // Locked - update countdown
     if (subFormWrap) subFormWrap.style.display = 'none';
     if (subLockedWrap) subLockedWrap.style.display = 'block';
 
@@ -1406,6 +1596,29 @@ function updateTimers() {
     document.getElementById('cd-hours').innerText = hours.toString().padStart(2, '0');
     document.getElementById('cd-mins').innerText = minutes.toString().padStart(2, '0');
     document.getElementById('cd-secs').innerText = seconds.toString().padStart(2, '0');
+  }
+
+  // 3. PUBLIC VOTE LOGIC
+  const voteDistance = voteUnlockDate - now;
+  const voteFormWrap = document.getElementById('vote-form-wrap');
+  const voteLockedWrap = document.getElementById('vote-locked-wrap');
+
+  if (voteDistance < 0) {
+    if (voteFormWrap) voteFormWrap.style.display = 'block';
+    if (voteLockedWrap) voteLockedWrap.style.display = 'none';
+  } else {
+    if (voteFormWrap) voteFormWrap.style.display = 'none';
+    if (voteLockedWrap) voteLockedWrap.style.display = 'block';
+
+    const days = Math.floor(voteDistance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((voteDistance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((voteDistance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((voteDistance % (1000 * 60)) / 1000);
+
+    document.getElementById('vote-cd-days').innerText = days.toString().padStart(2, '0');
+    document.getElementById('vote-cd-hours').innerText = hours.toString().padStart(2, '0');
+    document.getElementById('vote-cd-mins').innerText = minutes.toString().padStart(2, '0');
+    document.getElementById('vote-cd-secs').innerText = seconds.toString().padStart(2, '0');
   }
 }
 
