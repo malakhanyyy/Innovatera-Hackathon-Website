@@ -1319,6 +1319,17 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
   </div>
 </footer>
 
+
+<!-- Custom Popup Modal -->
+<div id="vote-modal" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.4); backdrop-filter:blur(4px); align-items:center; justify-content:center;">
+  <div style="background:var(--bg2); padding:30px; border-radius:20px; text-align:center; max-width:400px; width:90%; border:1px solid var(--border); box-shadow:var(--shadow-lg);">
+    <i class="fa-solid fa-circle-exclamation" style="font-size:3rem; color:var(--pink); margin-bottom:20px;"></i>
+    <h3 style="font-family:'Outfit',sans-serif; margin-bottom:10px;">Name Required</h3>
+    <p style="color:var(--muted); margin-bottom:20px;">Please enter your full name to proceed with your vote.</p>
+    <button onclick="closeModal()" style="background:var(--green); color:var(--white); border:none; padding:12px 30px; border-radius:8px; font-weight:700; cursor:pointer;">Got it</button>
+  </div>
+</div>
+
 <script>
 // IMPORTANT: Please verify this is your exact Web App URL
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxvzuo1jOTqsar_hl3yurH_X6y3CgKrTU6puFJe79-c-rBsi0zQ5dV59DZUt0gdtqw3Kg/exec';
@@ -1422,8 +1433,10 @@ function castVote(event, projectName, voteValue) {
   const voterNameInput = document.getElementById('voter-name');
   const voterName = voterNameInput.value.trim();
 
+  // --- THEMED MODAL TRIGGER ---
   if (!voterName) {
-    alert("Please enter your name!");
+    openModal(); // This opens your themed popup!
+    voterNameInput.style.borderColor = 'var(--pink)';
     voterNameInput.focus();
     return;
   }
@@ -1437,12 +1450,12 @@ function castVote(event, projectName, voteValue) {
   btn.querySelector('.vote-text').innerText = "Voted!";
   document.querySelectorAll('.creative-vote-btn').forEach(b => b.disabled = true);
 
-  // Send to Script with the project-specific voteValue
+  // Send to Script
   const data = new URLSearchParams();
   data.append("form_type", "Public Vote");
   data.append("voter_name", voterName);
   data.append("project_name", projectName);
-  data.append("vote_value", voteValue); // Now sends 1, 2, or 3
+  data.append("vote_value", voteValue);
 
   fetch(SCRIPT_URL, {
     method: 'POST',
@@ -1450,6 +1463,14 @@ function castVote(event, projectName, voteValue) {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: data.toString()
   }).catch(err => console.error("Sync failed:", err));
+}
+
+function openModal() {
+  document.getElementById('vote-modal').style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('vote-modal').style.display = 'none';
 }
 
 // ── Scroll reveal ──
