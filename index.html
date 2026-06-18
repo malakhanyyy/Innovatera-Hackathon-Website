@@ -1016,7 +1016,7 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
         <div id="sub-locked-wrap" style="text-align: center; padding: 20px 10px;">
           <div style="font-size: 3.5rem; color: var(--muted); margin-bottom: 20px;"><i class="fa-solid fa-lock"></i></div>
           <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.8rem; color:var(--text); margin-bottom:10px;">Submission Locked</h3>
-          <p style="font-size:1rem; color:var(--muted); line-height: 1.6; margin-bottom: 30px;">The MVP submission portal will automatically unlock on <strong>June 22, 2026</strong>.</p>
+          <p style="font-size:1rem; color:var(--muted); line-height: 1.6; margin-bottom: 30px;">The MVP submission portal will automatically unlock on <strong>June 19, 2026</strong>.</p>
           
           <div class="countdown-timer">
             <div class="cd-box"><span id="cd-days">00</span><small>Days</small></div>
@@ -1052,8 +1052,10 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
                   <option value="DuckNest">DuckNest</option>
                   <option value="AI_SGMS">AI-SGMS</option>
                   <option value="Eco_Phantom">Eco-Phantom</option>
-                  <option value="HerRhythm">HerRhythm</option>
-
+                  <option value="TheHormoneGuardians">TheHormoneGuardians</option>
+                  <option value="Athar">Athar</option>
+                  <option value="TeacherZ">TeacherZ</option>
+                  
                 </select>
               </div>
               <div class="form-group">
@@ -1100,7 +1102,7 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
         <div id="vote-locked-wrap" style="text-align: center; padding: 20px 10px;">
           <div style="font-size: 3.5rem; color: var(--muted); margin-bottom: 20px;"><i class="fa-solid fa-lock"></i></div>
           <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.8rem; color:var(--text); margin-bottom:10px;">Voting Locked</h3>
-          <p style="font-size:1rem; color:var(--muted); line-height: 1.6; margin-bottom: 30px;">The public voting portal will unlock on <strong>June 24, 2026</strong> once all MVPs are submitted.</p>
+          <p style="font-size:1rem; color:var(--muted); line-height: 1.6; margin-bottom: 30px;">The public voting portal will unlock on <strong>June 20, 2026</strong> once all MVPs are submitted.</p>
           
           <div class="countdown-timer">
             <div class="cd-box"><span id="vote-cd-days">00</span><small>Days</small></div>
@@ -1249,6 +1251,31 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
                 <span class="vote-text">Vote for AI-SGMS</span>
               </button>
             </div>
+
+            <div class="vote-card">
+              <h4>The Hormone Guardians</h4>
+              <button class="creative-vote-btn" onclick="castVote(event, 'TheHormoneGuardians', '17')">
+                <i class="fa-solid fa-heart"></i>
+                <span class="vote-text">Vote for TheHormoneGuardians</span>
+              </button>
+            </div>
+
+            <div class="vote-card">
+              <h4>Athar</h4>
+              <button class="creative-vote-btn" onclick="castVote(event, 'Athar', '18')">
+                <i class="fa-solid fa-heart"></i>
+                <span class="vote-text">Vote for Athar</span>
+              </button>
+            </div>
+
+            <div class="vote-card">
+              <h4>TeacherZ</h4>
+              <button class="creative-vote-btn" onclick="castVote(event, 'TeacherZ', '19')">
+                <i class="fa-solid fa-heart"></i>
+                <span class="vote-text">Vote for TeacherZ</span>
+              </button>
+            </div>            
+            
           </div>
         </div>
       </div>
@@ -1302,7 +1329,7 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
           <div class="form-row">
             <div class="form-group" style="margin:0;">
               <label>Judge Full Name</label>
-              <input type="text" id="judge_name" required placeholder="e.g., Dr. Sarah Ahmed">
+              <input type="text" id="judge_name" required placeholder="e.g., Dr. Sara">
             </div>
             <div class="form-group" style="margin:0;">
               <label>Team Being Evaluated</label>
@@ -1324,7 +1351,9 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
                 <option value="AI_SGMS">AI-SGMS</option>
                 <option value="Eco_Phantom">Eco-Phantom</option>
                 <option value="HerRhythm">HerRhythm</option>
-
+                <option value="TheHormoneGuardians">TheHormoneGuardians</option>
+                <option value="Athar">Athar</option>
+                <option value="TeacherZ">TeacherZ</option>
                 
               </select>
             </div>
@@ -1493,7 +1522,7 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
 
     <p class="footer-desc">Tech Solutions for Women's Health &amp; the Environment · Organized by Innovatera in collaboration with UFE WorX &amp; Minvent</p>
     <div style="width:100%; height:1px; background:var(--border); margin:30px 0;"></div>
-    <div class="footer-copy">© 2026 Innovatera · Minvent UFE · All rights reserved</div>
+    <div class="footer-copy">© 2026 Innovatera · UFE · All rights reserved</div>
   </div>
 </footer>
 
@@ -1843,9 +1872,9 @@ const firstPlaceCard = document.getElementById('first-place-card');
 if (firstPlaceCard) prizeObserver.observe(firstPlaceCard);
 
 // ── TIMERS & LOCK LOGIC ──
-const regDeadline = new Date('June 18, 2026 23:59:59').getTime();
+const regDeadline = new Date('June 20, 2026 23:59:59').getTime();
 const subUnlockDate = new Date('June 19, 2026 00:00:00').getTime();
-const voteUnlockDate = new Date('June 22, 2026 00:00:00').getTime();
+const voteUnlockDate = new Date('June 20, 2026 00:00:00').getTime();
 
 function updateTimers() {
   const now = new Date().getTime();
