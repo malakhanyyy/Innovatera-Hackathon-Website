@@ -388,7 +388,7 @@ section { padding:100px 5%; max-width:1300px; margin:0 auto; }
 @keyframes heartBeat { 0% { transform: scale(1); } 100% { transform: scale(1.3); } }
 
 /* ── JURY PORTAL STYLES ── */
-.auth-box { max-width: 440px; margin: 0 auto; background: rgba(255,255,255,0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 50px 40px; border-radius: 24px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow-lg); }
+.auth-box { max-width: 440px; margin: 0 auto; background: rgba(255,255,255,0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 50px 40px; border-radius: 24px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow-lg); transition: all 0.5s ease; }
 .auth-box i { font-size: 3.5rem; color: var(--gold); margin-bottom: 24px; filter: drop-shadow(0 4px 10px rgba(217,160,28,0.3)); }
 .auth-box h3 { font-family: 'Outfit', sans-serif; font-size: 1.8rem; font-weight: 800; margin-bottom: 24px; color: var(--text); }
 .judge-header { text-align: center; margin-bottom: 50px; }
@@ -459,6 +459,33 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
 @keyframes scaleIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
 .reveal { opacity:0; transform:translateY(32px); transition:opacity 0.8s ease, transform 0.8s ease; }
 .reveal.visible { opacity:1; transform:translateY(0); }
+
+/* ── POSTAL ANIMATION CLASSES FOR JUDGE LOGIN ── */
+.airmail-border {
+  border: 6px solid transparent;
+  border-image: repeating-linear-gradient(-45deg, #111 0, #111 10px, transparent 10px, transparent 20px, var(--gold) 20px, var(--gold) 30px, transparent 30px, transparent 40px) 10;
+}
+.fly-away {
+  transform: translate(250px, -250px) rotate(35deg) scale(0);
+  opacity: 0;
+}
+.stamp-down {
+  animation: stampDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+@keyframes stampDown {
+  0% { transform: scale(3) rotate(-25deg); opacity: 0; }
+  100% { transform: scale(1) rotate(-12deg); opacity: 1; }
+}
+
+/* ── SHAKE ANIMATION FOR LOGIN ERROR ── */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+.shake-animation {
+  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
 
 /* ── RESPONSIVE OVERRIDES ── */
 @media(max-width:900px){
@@ -1312,10 +1339,9 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
   </div>
 </div>
 
-<!-- ── JUDGE AUTH VIEW ── -->
 <div id="judge-auth" class="view">
   <div class="form-section" style="padding-top:160px; min-height:100vh;">
-    <div class="auth-box">
+    <div class="auth-box" id="judge-login-box">
       <i class="fa-solid fa-gavel"></i>
       <h3>Jury Access Portal</h3>
       <form onsubmit="handleJudgeLogin(event)">
@@ -1332,10 +1358,27 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
         </div>
       </form>
     </div>
+
+    <div class="auth-box airmail-border overflow-hidden" id="judge-postal-anim" style="display: none; position: relative; height: 380px; padding:0; background: #fdfbf7;">
+        <div class="absolute inset-0 flex items-center justify-center">
+            <div id="jury-flying-envelope" class="text-6xl transition-all duration-1000 ease-in-out">
+                <i class="fa-solid fa-envelope-open-text" style="color: var(--gold);"></i>
+            </div>
+        </div>
+        
+        <div id="jury-auth-content" class="opacity-0 transition-opacity duration-500 absolute inset-0 flex flex-col items-center justify-center p-8 bg-[#fdfbf7] pointer-events-none">
+            <div id="jury-postal-stamp" class="w-24 h-24 mb-4 border-[3px] rounded-full flex items-center justify-center opacity-0" style="border-color: var(--green); color: var(--green);">
+                <div class="border rounded-full w-[5.5rem] h-[5.5rem] flex items-center justify-center" style="border-color: var(--green);">
+                    <span class="font-bold text-[10px] uppercase tracking-widest text-center leading-tight">Access<br>Granted</span>
+                </div>
+            </div>
+            <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; color: var(--text);">Credentials Verified</h3>
+            <p class="text-gray-600 font-light text-sm" style="color: var(--muted);">Transferring to secure scoring portal...</p>
+        </div>
+    </div>
   </div>
 </div>
 
-<!-- ── JUDGE SCORING PORTAL ── -->
 <div id="judge-portal" class="view" style="padding-bottom:120px;">
   <div class="form-section" style="padding-top:140px; background:var(--bg); min-height:100vh;">
     <div class="container" style="max-width:800px; margin:0 auto;">
@@ -1552,11 +1595,9 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
       <div class="logo-box">
         <img src="https://drive.google.com/thumbnail?id=1VfqNR8y9EnikQGwhRlhd9A5ZnsLL3Nxf&sz=w1000" alt="Ambassade de France">
       </div>
-      <!-- Robust Logo -->
       <div class="logo-box">
         <img src="https://drive.google.com/thumbnail?id=1T1w58JODU_-cLIbTQ99uw1ZV_Ucpd6mW&sz=w1000" alt="Robust Logo">
       </div>
-      <!-- Updated ValueX Logo -->
       <div class="logo-box">
         <img src="https://drive.google.com/thumbnail?id=17PmFJs_1mT8VfcHG1U2E1fSjtya29LZI&sz=w1000" alt="ValueX Logo">
       </div>
@@ -1568,13 +1609,21 @@ footer { border-top:1px solid var(--border); padding:60px 5%; text-align:center;
   </div>
 </footer>
 
-<!-- Custom Popup Modal -->
 <div id="vote-modal" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.4); backdrop-filter:blur(4px); align-items:center; justify-content:center;">
   <div style="background:var(--bg2); padding:30px; border-radius:24px; text-align:center; max-width:400px; width:90%; border:1px solid var(--border); box-shadow:var(--shadow-lg);">
     <i class="fa-solid fa-circle-exclamation" style="font-size:3.5rem; color:var(--pink); margin-bottom:20px;"></i>
     <h3 style="font-family:'Outfit',sans-serif; margin-bottom:10px; font-weight: 800; font-size: 1.6rem;">Name Required</h3>
     <p style="color:var(--muted); margin-bottom:24px; line-height: 1.6;">Please enter your full name to proceed with your vote.</p>
     <button onclick="closeModal()" style="background:var(--green); color:var(--white); border:none; padding:14px 36px; border-radius:12px; font-weight:700; cursor:pointer; font-family: 'Outfit', sans-serif; transition: all 0.3s ease;">Got it</button>
+  </div>
+</div>
+
+<div id="jury-error-modal" style="display:none; position:fixed; inset:0; z-index:10000; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px); align-items:center; justify-content:center; opacity:0; transition: opacity 0.3s ease;">
+  <div id="jury-error-box" style="background:var(--bg2); padding:40px 30px; border-radius:24px; text-align:center; max-width:400px; width:90%; border:1px solid #ef4444; box-shadow: 0 25px 50px -12px rgba(239, 68, 68, 0.25); transform: scale(0.9); transition: transform 0.3s ease;">
+    <i class="fa-solid fa-triangle-exclamation" style="font-size:3.5rem; color:#ef4444; margin-bottom:20px;"></i>
+    <h3 style="font-family:'Outfit',sans-serif; margin-bottom:10px; font-weight: 800; font-size: 1.6rem; color:var(--text);">Access Denied</h3>
+    <p style="color:var(--muted); margin-bottom:24px; line-height: 1.6;">The Jury ID or Password you entered is incorrect. Please try again.</p>
+    <button onclick="closeJuryErrorModal()" style="background:#ef4444; color:var(--white); border:none; padding:14px 36px; border-radius:12px; font-weight:700; cursor:pointer; font-family: 'Outfit', sans-serif; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);">Try Again</button>
   </div>
 </div>
 
@@ -1717,10 +1766,75 @@ function handleJudgeLogin(e) {
   const p = document.getElementById('j-pass').value.trim();
   
   if (u === 'judge2026' && p === 'innovaterahack2026') {
-    showView('judge-portal');
+    // Hide standard login box, show postal box
+    document.getElementById('judge-login-box').style.display = 'none';
+    const postalAnim = document.getElementById('judge-postal-anim');
+    postalAnim.style.display = 'block';
+
+    const flyingEnvelope = document.getElementById('jury-flying-envelope');
+    const authContent = document.getElementById('jury-auth-content');
+    const postalStamp = document.getElementById('jury-postal-stamp');
+
+    // Reset animation states
+    flyingEnvelope.classList.remove('fly-away');
+    authContent.classList.remove('opacity-100');
+    authContent.classList.add('opacity-0');
+    postalStamp.classList.remove('stamp-down');
+
+    setTimeout(() => {
+        flyingEnvelope.classList.add('fly-away');
+        authContent.classList.remove('opacity-0');
+        authContent.classList.add('opacity-100');
+        
+        setTimeout(() => {
+            postalStamp.classList.add('stamp-down');
+            // Festive confetti
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 }, colors: ['#D9A01C', '#6DA32D'] });
+
+            // Redirect to judge portal after a short delay
+            setTimeout(() => {
+                showView('judge-portal');
+                // Clean up for next time
+                setTimeout(() => {
+                    document.getElementById('judge-login-box').style.display = 'block';
+                    postalAnim.style.display = 'none';
+                    document.getElementById('j-user').value = '';
+                    document.getElementById('j-pass').value = '';
+                }, 500);
+            }, 2200);
+        }, 300);
+    }, 300);
+
   } else {
-    alert("Invalid credentials. Access denied.");
+    // ── NEW: Trigger custom error modal and shake animation
+    const loginBox = document.getElementById('judge-login-box');
+    loginBox.classList.remove('shake-animation');
+    void loginBox.offsetWidth; // Trigger DOM reflow to restart animation
+    loginBox.classList.add('shake-animation');
+    
+    openJuryErrorModal();
   }
+}
+
+// ── NEW: Error Modal Functions ──
+function openJuryErrorModal() {
+  const modal = document.getElementById('jury-error-modal');
+  const box = document.getElementById('jury-error-box');
+  modal.style.display = 'flex';
+  setTimeout(() => {
+      modal.style.opacity = '1';
+      box.style.transform = 'scale(1)';
+  }, 10);
+}
+
+function closeJuryErrorModal() {
+  const modal = document.getElementById('jury-error-modal');
+  const box = document.getElementById('jury-error-box');
+  modal.style.opacity = '0';
+  box.style.transform = 'scale(0.9)';
+  setTimeout(() => {
+      modal.style.display = 'none';
+  }, 300);
 }
 
 const scoreGroups = document.querySelectorAll('.score-btn-group');
@@ -1994,6 +2108,13 @@ function updateTimers() {
 updateTimers();
 setInterval(updateTimers, 1000);
 
+// Close modals via ESC key
+document.addEventListener('keydown', function(event){
+  if(event.key === "Escape"){
+    if(document.getElementById('vote-modal').style.display === 'flex') closeModal();
+    if(document.getElementById('jury-error-modal').style.display === 'flex') closeJuryErrorModal();
+  }
+});
 </script>
 </body>
 </html>
